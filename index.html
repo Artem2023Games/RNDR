@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>РНДР — Российская Народная Демократическая Республика</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes glow {
+            0% { text-shadow: 0 0 10px rgba(212, 175, 55, 0.2); }
+            50% { text-shadow: 0 0 30px rgba(212, 175, 55, 0.5); }
+            100% { text-shadow: 0 0 10px rgba(212, 175, 55, 0.2); }
+        }
+
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        body {
+            background: linear-gradient(145deg, #0b1e2e 0%, #1a2f40 50%, #0f2a3a 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before,
+        body::after {
+            content: '✦';
+            position: fixed;
+            font-size: 20px;
+            color: rgba(255, 215, 0, 0.06);
+            animation: float 6s infinite alternate;
+            pointer-events: none;
+        }
+        body::before {
+            top: 10%;
+            left: 5%;
+            font-size: 40px;
+            animation-duration: 8s;
+        }
+        body::after {
+            bottom: 15%;
+            right: 8%;
+            font-size: 50px;
+            animation-duration: 10s;
+        }
+
+        .card {
+            max-width: 820px;
+            background: #ffffff;
+            border-radius: 48px;
+            padding: 32px 28px 28px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
+            text-align: center;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            position: relative;
+            transition: 0.3s;
+            animation: fadeUp 0.8s ease-out;
+            z-index: 2;
+        }
+
+        .burger {
+            position: absolute;
+            top: 20px;
+            right: 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 10;
+            background: rgba(10, 26, 43, 0.07);
+            padding: 10px 14px;
+            border-radius: 20px;
+            transition: 0.3s;
+        }
+        .burger:hover {
+            background: rgba(10, 26, 43, 0.15);
+        }
+        .burger span {
+            display: block;
+            width: 28px;
+            height: 3px;
+            background: #0a1a2b;
+            border-radius: 4px;
+            transition: 0.3s;
+        }
+        .menu {
+            display: none;
+            position: absolute;
+            top: 76px;
+            right: 22px;
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 18px 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            border: 1px solid #dce2ea;
+            z-index: 20;
+            text-align: left;
+            min-width: 190px;
+        }
+        .menu a {
+            display: block;
+            padding: 8px 0;
+            color: #0a1a2b;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            border-bottom: 1px solid #f0f2f5;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+        .menu a:last-child {
+            border-bottom: none;
+        }
+        .menu a:hover {
+            color: #b8860b;
+            padding-left: 6px;
+        }
+        .menu.open {
+            display: block;
+        }
+
+        .flag-svg {
+            width: 100%;
+            height: 140px;
+            border-radius: 20px;
+            border: 2px solid #d4af37;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            margin-bottom: 16px;
+            transition: transform 0.3s;
+        }
+        .flag-svg:hover {
+            transform: scale(1.01);
+        }
+
+        .emblem-svg {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 14px auto;
+            display: block;
+            filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.2));
+            transition: transform 0.3s;
+            animation: float 4s infinite alternate;
+        }
+        .emblem-svg:hover {
+            transform: rotate(6deg) scale(1.03);
+        }
+
+        h1 {
+            font-size: 34px;
+            font-weight: 800;
+            color: #0a1a2b;
+            letter-spacing: 1px;
+            animation: glow 4s infinite alternate;
+        }
+        .subhead {
+            font-size: 17px;
+            color: #1f3a4b;
+            margin-top: 4px;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+        .badge {
+            display: inline-block;
+            background: #d4af37;
+            color: #0a1a2b;
+            font-size: 12px;
+            font-weight: 800;
+            padding: 4px 18px;
+            border-radius: 40px;
+            margin-bottom: 10px;
+            letter-spacing: 0.6px;
+        }
+        .divider {
+            width: 70px;
+            height: 3px;
+            background: linear-gradient(to right, #d4af37, #f7e05e, #d4af37);
+            margin: 12px auto 16px auto;
+            border-radius: 4px;
+        }
+        .pillar-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin: 16px 0 18px 0;
+        }
+        .pillar {
+            background: #e3eaf2;
+            padding: 8px 24px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 15px;
+            color: #0a1a2b;
+            border: 1px solid #c0cedd;
+            transition: 0.25s ease;
+            cursor: default;
+        }
+        .pillar:hover {
+            transform: translateY(-3px) scale(1.02);
+            background: #d4af37;
+            color: #0a1a2b;
+            border-color: #b8860b;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+        }
+        .btn {
+            display: inline-block;
+            margin-top: 4px;
+            background: #0a1a2b;
+            color: white;
+            padding: 14px 42px;
+            font-size: 17px;
+            font-weight: 700;
+            border-radius: 60px;
+            text-decoration: none;
+            border: 2px solid #d4af37;
+            transition: 0.25s ease;
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.2);
+        }
+        .btn:hover {
+            background: #d4af37;
+            color: #0a1a2b;
+            border-color: #0a1a2b;
+            transform: scale(1.02);
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 13px;
+            color: #4a5f72;
+            border-top: 1px solid #dce2ea;
+            padding-top: 16px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            backdrop-filter: blur(6px);
+        }
+        .modal.active {
+            display: flex;
+        }
+        .modal-content {
+            max-width: 650px;
+            max-height: 80vh;
+            background: #ffffff;
+            padding: 30px 32px;
+            border-radius: 32px;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
+            border: 1px solid #d4af37;
+            overflow-y: auto;
+            position: relative;
+            text-align: left;
+            width: 90%;
+            animation: fadeUp 0.4s ease-out;
+        }
+        .modal-close {
+            position: sticky;
+            top: 0;
+            float: right;
+            background: #d52b1e;
+            color: white;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 22px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            z-index: 10;
+        }
+        .modal-close:hover {
+            background: #a51c1c;
+            transform: scale(1.1);
+        }
+        .modal-content .back-btn {
+            display: inline-block;
+            margin-bottom: 12px;
+            background: none;
+            border: none;
+            color: #b8860b;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            padding: 0;
+            transition: 0.2s;
+        }
+        .modal-content .back-btn:hover {
+            color: #0a1a2b;
+            transform: translateX(-4px);
+        }
+        .modal-content h2 {
+            font-size: 26px;
+            color: #0a1a2b;
+            margin-bottom: 14px;
+            border-bottom: 2px solid #d4af37;
+            padding-bottom: 8px;
+        }
+        .modal-content p,
+        .modal-content li {
+            font-size: 16px;
+            line-height: 1.7;
+            color: #1e2b39;
+        }
+        .modal-content ul {
+            list-style: none;
+            padding: 0;
+        }
+        .modal-content ul li {
+            padding: 4px 0 4px 28px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%23d4af37" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>') left center no-repeat;
+            background-size: 18px;
+        }
+        .modal-content .symbol-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .modal-content .symbol-grid .item {
+            background: #f8faff;
+            border-radius: 16px;
+            padding: 10px 12px;
+            border: 1px solid #dce2ea;
+            font-weight: 600;
+            font-size: 14px;
+            color: #0a1a2b;
+        }
+        .modal-content .symbol-grid .item span {
+            display: block;
+            font-weight: 400;
+            font-size: 13px;
+            color: #3f5568;
+        }
+        .modal-content .color-dot {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border-radius: 6px;
+            margin-right: 8px;
+            vertical-align: middle;
+            border: 1px solid #ccc;
+        }
+        .modal-content .download-btn {
+            display: inline-block;
+            margin-top: 10px;
+            background: #0a1a2b;
+            color: white;
+            padding: 10px 24px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: 0.2s;
+            border: 1px solid #d4af37;
+            cursor: pointer;
+        }
+        .modal-content .download-btn:hover {
+            background: #d4af37;
+            color: #0a1a2b;
+        }
+        .modal-content .download-btn-file {
+            display: inline-block;
+            margin-top: 10px;
+            background: #0a1a2b;
+            color: white;
+            padding: 10px 24px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: 0.2s;
+            border: 1px solid #d4af37;
+        }
+        .modal-content .download-btn-file:hover {
+            background: #d4af37;
+            color: #0a1a2b;
+        }
+        .modal-content .service-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 12px;
+        }
+        .modal-content .service-grid .service-item {
+            background: #f8faff;
+            border-radius: 16px;
+            padding: 14px 12px;
+            border: 1px solid #dce2ea;
+            text-align: center;
+            font-weight: 600;
+            font-size: 14px;
+            color: #0a1a2b;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+        .modal-content .service-grid .service-item:hover {
+            background: #d4af37;
+            color: #0a1a2b;
+            border-color: #b8860b;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+        }
+        .modal-content .service-grid .service-item span {
+            display: block;
+            font-weight: 400;
+            font-size: 12px;
+            color: #5e6f82;
+            margin-top: 4px;
+        }
+        .modal-content .service-grid .service-item:hover span {
+            color: #0a1a2b;
+        }
+        .modal-content .action-btn {
+            display: inline-block;
+            margin-top: 12px;
+            background: #0a1a2b;
+            color: white;
+            padding: 10px 24px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: 0.2s;
+            border: 1px solid #d4af37;
+            cursor: pointer;
+        }
+        .modal-content .action-btn:hover {
+            background: #d4af37;
+            color: #0a1a2b;
+        }
+        .map-block {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 12px;
+        }
+        .map-block .region-block {
+            background: #dce2ea;
+            padding: 10px 18px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            text-align: center;
+            border: 1px solid #b8c5d3;
+        }
+        @media (max-width: 600px) {
+            .card {
+                padding: 18px 12px;
+                border-radius: 32px;
+            }
+            h1 {
+                font-size: 24px;
+            }
+            .subhead {
+                font-size: 14px;
+            }
+            .pillar {
+                padding: 6px 14px;
+                font-size: 12px;
+            }
+            .btn {
+                padding: 12px 24px;
+                font-size: 14px;
+            }
+            .flag-svg {
+                height: 80px;
+            }
+            .emblem-svg {
+                width: 70px;
+                height: 70px;
+            }
+            .burger {
+                top: 12px;
+                right: 12px;
+                padding: 8px 10px;
+            }
+            .burger span {
+                width: 22px;
+                height: 2px;
+            }
+            .menu {
+                top: 60px;
+                right: 12px;
+                padding: 14px 16px;
+                min-width: 160px;
+            }
+            .menu a {
+                font-size: 13px;
+                padding: 6px 0;
+            }
+            .modal-content {
+                padding: 18px 14px;
+                max-height: 85vh;
+            }
+            .modal-content h2 {
+                font-size: 20px;
+            }
+            .modal-content p,
+            .modal-content li {
+                font-size: 14px;
+            }
+            .modal-content .symbol-grid {
+                grid-template-columns: 1fr;
+            }
+            .modal-content .service-grid {
+                grid-template-columns: 1fr;
+            }
+            .badge {
+                font-size: 10px;
+                padding: 2px 12px;
+            }
+            .footer {
+                font-size: 11px;
+            }
+        }
+        @media (max-width: 400px) {
+            .card {
+                padding: 12px 8px;
+                border-radius: 24px;
+            }
+            h1 {
+                font-size: 20px;
+            }
+            .subhead {
+                font-size: 12px;
+            }
+            .btn {
+                padding: 10px 18px;
+                font-size: 12px;
+            }
+            .flag-svg {
+                height: 60px;
+            }
+            .emblem-svg {
+                width: 56px;
+                height: 56px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+
+        <div class="burger" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </div>
+        <div class="menu" id="menu">
+            <a onclick="openModal('about')">📖 О стране</a>
+            <a onclick="openModal('symbols')">⚜️ Символы</a>
+            <a onclick="openModal('coat')">🛡️ Герб</a>
+            <a onclick="openModal('map')">🗺️ Карта</a>
+            <a onclick="openModal('anthem')">🎵 Гимн</a>
+            <a onclick="openModal('tech')">⚙️ Технологии</a>
+            <a onclick="openModal('services')">🏛️ Госуслуги</a>
+            <a onclick="openModal('history')">📜 История</a>
+            <a onclick="openModal('sport')">🏅 Спорт</a>
+            <a onclick="openModal('ecology')">🌱 Экология</a>
+            <a onclick="openModal('laws')">⚖️ Законы</a>
+            <a onclick="openModal('future')">🚀 Будущее</a>
+        </div>
+
+        <svg class="flag-svg" viewBox="0 0 160 90" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="160" height="22.5" fill="#ffffff" />
+            <rect x="0" y="22.5" width="160" height="22.5" fill="#0039A6" />
+            <rect x="0" y="45" width="160" height="22.5" fill="#D52B1E" />
+            <rect x="0" y="67.5" width="160" height="22.5" fill="#009A44" />
+            <polygon points="80,12 88,32 110,32 92,45 98,65 80,52 62,65 68,45 50,32 72,32" fill="#FFD700" stroke="#d4af37" stroke-width="1" />
+        </svg>
+
+        <svg class="emblem-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="48" fill="#6b0f0f" stroke="#d4af37" stroke-width="3" />
+            <circle cx="50" cy="50" r="40" fill="#8b1a1a" stroke="#d4af37" stroke-width="2" />
+            <polygon points="50,15 58,35 80,35 63,48 70,68 50,55 30,68 37,48 20,35 42,35" fill="#FFD700" />
+            <circle cx="50" cy="45" r="10" fill="#ffffff" />
+            <path d="M50 32 L50 58 M36 40 L64 40 M36 50 L64 50" stroke="#0039A6" stroke-width="2" />
+            <text x="50" y="78" font-size="10" font-weight="bold" fill="#ffd966" text-anchor="middle">РНДР</text>
+        </svg>
+
+        <div class="badge">Основана 24.08.2026</div>
+
+        <h1>РНДР</h1>
+        <div class="subhead">Российская Народная Демократическая Республика</div>
+        <div class="divider"></div>
+
+        <div class="pillar-grid">
+            <div class="pillar">⚖️ Порядок</div>
+            <div class="pillar">🤝 Единство</div>
+            <div class="pillar">🚀 Будущее</div>
+        </div>
+
+        <a class="btn" href="https://t.me/rndr_official_ru" target="_blank">📢 Перейти в Telegram-канал</a>
+
+        <div class="footer">
+            <strong>Девиз:</strong> «Порядок. Единство. Будущее.»<br>
+            Конституция • Законы • RuOS • RuStar • RuNet
+        </div>
+    </div>
+
+    <div class="modal" id="modal">
+        <div class="modal-content" id="modalContent">
+            <button class="modal-close" onclick="closeModal()">✕</button>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('menu').classList.toggle('open');
+        }
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('menu');
+            const burger = document.querySelector('.burger');
+            if (!burger.contains(event.target) && !menu.contains(event.target)) {
+                menu.classList.remove('open');
+            }
+        });
+
+        function showNotice(serviceName) {
+            alert('📢 Услуга «' + serviceName + '» будет доступна в ближайшее время. Следите за обновлениями!');
+        }
+
+        const serviceDetails = {
+            passport: `
+                <button class="back-btn" onclick="openModal('services')">← Назад к услугам</button>
+                <h2>🪪 Паспорт и документы</h2>
+                <p><strong>Управление документами РНДР</strong></p>
+                <ul>
+                    <li>Получение и замена паспорта гражданина РНДР</li>
+                    <li>Оформление RuID (цифровой идентификатор)</li>
+                    <li>Загранпаспорт (только для власти)</li>
+                    <li>Водительское удостоверение</li>
+                    <li>Свидетельство о рождении</li>
+                </ul>
+                <p style="margin-top:12px; color:#6a7f92;">📅 Срок изготовления: 5–10 рабочих дней</p>
+                <button class="action-btn" onclick="showNotice('Подача заявления на паспорт')">📝 Подать заявление</button>
+            `,
+            taxes: `
+                <button class="back-btn" onclick="openModal('services')">← Назад к услугам</button>
+                <h2>💰 Налоги и финансы</h2>
+                <p><strong>Финансовое управление РНДР</strong></p>
+                <ul>
+                    <li>Подача налоговой декларации</li>
+                    <li>Проверка задолженностей</li>
+                    <li>Получение субсидий и компенсаций</li>
+                    <li>Управление RuCard и цифровым рублём</li>
+                </ul>
+                <p style="margin-top:12px; color:#6a7f92;">📊 Налоговый период: календарный год</p>
+                <button class="action-btn" onclick="showNotice('Личный кабинет налогоплательщика')">💳 Перейти в RuBank</button>
+            `,
+            benefits: `
+                <button class="back-btn" onclick="openModal('services')">← Назад к услугам</button>
+                <h2>🧑‍🧑‍🧒 Пособия и выплаты</h2>
+                <p><strong>Социальная поддержка граждан РНДР</strong></p>
+                <ul>
+                    <li>Ежемесячное пособие на детей</li>
+                    <li>Пособие владельцам животных</li>
+                    <li>Материнский капитал</li>
+                    <li>Пенсионные выплаты</li>
+                </ul>
+                <p style="margin-top:12px; color:#6a7f92;">📅 Выплаты производятся через RuCard</p>
+                <button class="action-btn" onclick="showNotice('Оформление пособия')">📝 Оформить пособие</button>
+            `,
+            medicine: `
+                <button class="back-btn" onclick="openModal('services')">← Назад к услугам</button>
+                <h2>🏥 Медицина</h2>
+                <p><strong>Здравоохранение РНДР</strong></p>
+                <ul>
+                    <li>Запись к врачу (терапевт, узкие специалисты)</li>
+                    <li>Получение полиса ОМС</li>
+                    <li>Электронная медицинская карта</li>
+                    <li>Заказ лекарств из государственных аптек</li>
+                </ul>
+                <p style="margin-top:12px; color:#6a7f92;">🩺 Медицина в РНДР — бесплатная</p>
+                <button class="action-btn" onclick="showNotice('Запись к врачу')">📅 Записаться на приём</button>
+            `,
+            education: `
+                <button class="back-btn" onclick="openModal('services')">← Назад к услугам</button>
+                <h2>📚 Образование</h2>
+                <p><strong>Образовательная система РНДР</strong></p>
+                <ul>
+                    <li>Зачисление в школу (по прописке)</li>
+                    <li>Поступление в вузы РНДР</li>
+                    <li>Доступ к RuMir Education</li>
+                    <li>Стипендии и гранты</li>
+                </ul>
+                <p style="margin-top:12px; color:#6a7f92;">🎓 Образование — бесплатное</p>
+                <button class="action-btn" onclick="showNotice('Подача заявления в школу')">📝 Подать заявление</button>
+            `,
+            transport: `
+                <button class="back-btn" onclick="openModal('services')">← Назад к услугам</button>
+                <h2>🚗 Транспорт</h2>
+                <p><strong>Транспортное управление РНДР</strong></p>
+                <ul>
+                    <li>Регистрация автомобиля</li>
+                    <li>Получение водительских прав</li>
+                    <li>Оплата штрафов</li>
+                    <li>Заказ RuTaxi</li>
+                </ul>
+                <p style="margin-top:12px; color:#6a7f92;">🚦 Штрафы оплачиваются через RuPay</p>
+                <button class="action-btn" onclick="showNotice('Проверка штрафов')">📋 Проверить штрафы</button>
+            `,
+            animals: `
+                <button class="back-btn" onclick="openModal('services')">← Назад к услугам</button>
+                <h2>🐾 Животные</h2>
+                <p><strong>Защита животных в РНДР</strong></p>
+                <ul>
+                    <li>Регистрация животного (чип, RuID)</li>
+                    <li>Оформление пособия на животное</li>
+                    <li>Запись в государственную ветклинику</li>
+                    <li>Сообщение о нарушении (браконьерство, выбрасывание)</li>
+                </ul>
+                <p style="margin-top:12px; color:#6a7f92;">🐕 Лечение и питание животных — бесплатно</p>
+                <button class="action-btn" onclick="showNotice('Регистрация животного')">📝 Зарегистрировать животное</button>
+            `,
+            ecology: `
+                <button class="back-btn" onclick="openModal('services')">← Назад к услугам</button>
+                <h2>🌿 Экология</h2>
+                <p><strong>Экологическая служба РНДР</strong></p>
+                <ul>
+                    <li>Сообщить о браконьерстве</li>
+                    <li>Пожаловаться на загрязнение</li>
+                    <li>Информация о заповедниках</li>
+                    <li>Участие в экологических программах</li>
+                </ul>
+                <p style="margin-top:12px; color:#6a7f92;">🌳 Сообщение о нарушении — до 200 000 ₽ вознаграждения</p>
+                <button class="action-btn" onclick="showNotice('Сообщить о браконьерстве')">📞 Сообщить</button>
+            `,
+            culture: `
+                <button class="back-btn" onclick="openModal('services')">← Назад к услугам</button>
+                <h2>🎭 Культура</h2>
+                <p><strong>Культурное наследие РНДР</strong></p>
+                <ul>
+                    <li>Афиша театров и музеев</li>
+                    <li>Покупка билетов через RuStore</li>
+                    <li>Информация о государственных праздниках</li>
+                </ul>
+                <p style="margin-top:12px; color:#6a7f92;">🎭 Вход в государственные музеи — бесплатный для школьников</p>
+                <button class="action-btn" onclick="showNotice('Афиша мероприятий')">🎫 Смотреть афишу</button>
+            `,
+            sport_serv: `
+                <button class="back-btn" onclick="openModal('services')">← Назад к услугам</button>
+                <h2>⚽ Спорт</h2>
+                <p><strong>Спортивное управление РНДР</strong></p>
+                <ul>
+                    <li>Запись в спортивные секции</li>
+                    <li>Календарь соревнований</li>
+                    <li>Информация о киберспортивных турнирах</li>
+                </ul>
+                <p style="margin-top:12px; color:#6a7f92;">🏆 Секции — бесплатные для детей до 16 лет</p>
+                <button class="action-btn" onclick="showNotice('Запись в секцию')">📝 Записаться в секцию</button>
+            `,
+            defence: `
+                <button class="back-btn" onclick="openModal('services')">← Назад к услугам</button>
+                <h2>🛡️ Оборона</h2>
+                <p><strong>Военное управление РНДР</strong></p>
+                <ul>
+                    <li>Воинский учёт</li>
+                    <li>Информация о военных сборах (8–10 классы)</li>
+                    <li>Получение военного билета</li>
+                </ul>
+                <p style="margin-top:12px; color:#6a7f92;">⚔️ Воинская обязанность — с 18 лет</p>
+                <button class="action-btn" onclick="showNotice('Воинский учёт')">📋 Встать на учёт</button>
+            `,
+            feedback: `
+                <button class="back-btn" onclick="openModal('services')">← Назад к услугам</button>
+                <h2>📨 Обратная связь</h2>
+                <p><strong>Связь с государством</strong></p>
+                <ul>
+                    <li>Подать жалобу на действие чиновников</li>
+                    <li>Внести предложение по улучшению РНДР</li>
+                    <li>Задать вопрос Верховному Правителю</li>
+                </ul>
+                <p style="margin-top:12px; color:#6a7f92;">📩 Ответ в течение 5 рабочих дней</p>
+                <button class="action-btn" onclick="showNotice('Обратная связь')">✍️ Написать обращение</button>
+            `
+        };
+
+        const content = {
+            about: `
+                <h2>📖 О стране</h2>
+                <p><strong>Идеология:</strong> Демократический коммунизм — государство, где порядок даёт свободу, технологии служат человеку, а будущее строится сегодня.</p>
+                <p><strong>Столицы и центры:</strong></p>
+                <ul>
+                    <li><strong>Москва</strong> — внешняя столица (витрина, дипломатия)</li>
+                    <li><strong>Новочебоксарск</strong> — внутренняя столица (реальное управление)</li>
+                    <li><strong>Санкт-Петербург</strong> — культурный центр</li>
+                    <li><strong>Севастополь</strong> — военно-морской центр</li>
+                    <li><strong>Казань</strong> — научный центр</li>
+                </ul>
+                <a href="https://drive.google.com/uc?export=download&id=1Lo_LFhBPQqNOykrKrG5KGtpl7F4cIMib" class="download-btn" download="Конституция_РНДР.docx">📄 Скачать Конституцию РНДР (DOCX)</a>
+                <p style="margin-top:12px; font-size:15px; color:#3f5568;">
+                    📂 Остальные документы (Кодексы, Гимн) доступны в 
+                    <a href="https://t.me/rndr_official_ru" target="_blank" style="color:#b8860b; font-weight:600; text-decoration:none;">Telegram-канале РНДР</a>
+                </p>
+            `,
+            symbols: `
+                <h2>⚜️ Символика флага</h2>
+                <div class="symbol-grid">
+                    <div class="item"><span class="color-dot" style="background:#ffffff;"></span> Белый <span>Чистота, мир</span></div>
+                    <div class="item"><span class="color-dot" style="background:#0039A6;"></span> Синий <span>Вера, небо, традиции</span></div>
+                    <div class="item"><span class="color-dot" style="background:#D52B1E;"></span> Красный <span>Сила, мужество</span></div>
+                    <div class="item"><span class="color-dot" style="background:#009A44;"></span> Зелёный <span>Земля, жизнь, народ</span></div>
+                    <div class="item"><span style="font-size:24px;">✦</span> Золотая звезда <span>8 центров РНДР</span></div>
+                </div>
+            `,
+            coat: `
+                <h2>🛡️ Герб РНДР</h2>
+                <div class="symbol-grid">
+                    <div class="item">🔴 Красный щит <span>Мужество, сила</span></div>
+                    <div class="item">✦ Золотая звезда <span>Единство 8 центров</span></div>
+                    <div class="item">🕊️ Синий сокол <span>Свобода, будущее</span></div>
+                    <div class="item">🌿 Дуб + Колосья <span>Сила и богатство</span></div>
+                    <div class="item">👑 Корона <span>Суверенитет</span></div>
+                    <div class="item">⚔️ Мечи <span>Оборона</span></div>
+                </div>
+                <p style="margin-top:12px;"><strong>Девиз:</strong> «Порядок. Единство. Будущее.»</p>
+            `,
+            map: `
+                <h2>🗺️ Карта РНДР</h2>
+                <p><strong>Российская Федерация (витрина):</strong> Москва</p>
+                <p><strong>РНДР (реальное управление):</strong> Новочебоксарск, Санкт-Петербург, Севастополь, Казань</p>
+                <div class="map-block">
+                    <div class="region-block">🇷🇺 Москва</div>
+                    <div class="region-block">⚡ Новочебоксарск</div>
+                    <div class="region-block">🏛️ Санкт-Петербург</div>
+                    <div class="region-block">⚓ Севастополь</div>
+                    <div class="region-block">🔬 Казань</div>
+                </div>
+            `,
+            anthem: `
+                <h2>🎵 Гимн РНДР</h2>
+                <a href="https://drive.google.com/uc?export=download&id=1kuEnBDWGdx6rWsjeSHmc2RK5zDfmJV5_" class="download-btn-file" download="Гимн_РНДР.mp3">🎵 Скачать гимн (MP3)</a>
+                <p><em>«Россия — великая наша держава»</em></p>
+                <p><strong>Запев 1</strong><br>Россия — великая наша держава,<br>Спасённая Богом святая земля.<br>В единстве народов рождались победы,<br>Их доблесть и слава на все времена!</p>
+                <p><strong>Припев</strong><br>Взвейся, священное знамя российское —<br>Символ единства народов страны!<br>Родиной данная, сила могучая,<br>К новым победам всех нас приведёт!</p>
+                <p><strong>Запев 2</strong><br>Раздолье души на бескрайних просторах,<br>Нам свет озаряет благие дела.<br>Продолжим победы во благо России —<br>Свободная наша родная страна!</p>
+                <p><strong>Запев 3</strong><br>От малой Руси до огромных владений,<br>Историю мы сохраним на века,<br>Грядущим потомкам своим завещаем,<br>Былое хранить, чтить заветы всегда!</p>
+                <p style="font-size:13px; color:#6a7f92;">🎵 Музыка А.В. Александрова<br>📝 Слова А.А. Кандаурова</p>
+            `,
+            tech: `
+                <h2>⚙️ Технологии РНДР</h2>
+                <p><strong>РНДР — это технологический суверенитет. Всё, что мы создаём, работает внутри страны, защищено и принадлежит нам.</strong></p>
+
+                <h3 style="margin-top:16px;">🖥️ Операционные системы</h3>
+                <ul>
+                    <li><strong>RuOS</strong> — государственная ОС для ПК и серверов (Home, Pro, Ultimate)</li>
+                    <li><strong>RuOS Mobile</strong> — мобильная ОС (аналог Android/iOS, но полностью свой)</li>
+                    <li><strong>RuOS Console</strong> — для игровых консолей RuXbox</li>
+                </ul>
+
+                <h3 style="margin-top:12px;">🧠 Искусственный интеллект</h3>
+                <ul>
+                    <li><strong>RuGPT</strong> — ИИ для граждан: образование, быт, медицина, госуслуги</li>
+                    <li><strong>RuGemini</strong> — ИИ для власти: стратегическое управление, оборона, экология, анализ данных</li>
+                    <li><strong>RuGPT Lite</strong> — версия для туристов и внешнего мира (без доступа к данным)</li>
+                </ul>
+
+                <h3 style="margin-top:12px;">🛰️ Связь и интернет</h3>
+                <ul>
+                    <li><strong>RuStar</strong> — спутниковая группировка для связи 6G–8G внутри РНДР</li>
+                    <li><strong>RuStar Lite</strong> — спутниковая сеть для туристов и дружественных стран (4G–6G)</li>
+                    <li><strong>RuNet</strong> — внутренний интернет РНДР, полностью изолирован от внешнего мира</li>
+                    <li><strong>RuNet Lite</strong> — фильтруемый сегмент для дипломатических и туристических зон</li>
+                    <li><strong>RuWiFi</strong> — государственный Wi-Fi до 10 Гбит/с</li>
+                </ul>
+
+                <h3 style="margin-top:12px;">💳 Платёжная система</h3>
+                <ul>
+                    <li><strong>RuPay</strong> — национальная платёжная система</li>
+                    <li><strong>RuCard</strong> — банковские карты для всех граждан</li>
+                    <li><strong>RuBank</strong> — государственное банковское приложение</li>
+                    <li><strong>RuTerminal</strong> — платёжные терминалы по всей стране</li>
+                    <li><strong>Цифровой рубль РНДР</strong> — государственная криптовалюта с контролем инфляции</li>
+                </ul>
+
+                <h3 style="margin-top:12px;">🛒 Магазины и сервисы</h3>
+                <ul>
+                    <li><strong>RuStore</strong> — государственный магазин приложений и игр</li>
+                    <li><strong>RuSteam</strong> — государственная игровая платформа (аналог Steam)</li>
+                    <li><strong>RuMicrosoft</strong> — экосистема для бизнеса и образования (аналог Microsoft 365)</li>
+                    <li><strong>RuChat, RuTalk, RuBusiness</strong> — государственные мессенджеры</li>
+                    <li><strong>RuTube, RuClips</strong> — видеоплатформы РНДР</li>
+                </ul>
+
+                <h3 style="margin-top:12px;">🎮 Игровые технологии</h3>
+                <ul>
+                    <li><strong>RuXbox</strong> — государственная игровая консоль</li>
+                    <li><strong>RuMir</strong> — аналог Minecraft (Java, Bedrock, Dungeon, Legends)</li>
+                    <li><strong>RuBlox</strong> — аналог Roblox</li>
+                    <li><strong>Танковый Бой РНДР</strong> — военно-патриотический симулятор</li>
+                    <li><strong>Штурм РНДР</strong> — тактический шутер</li>
+                </ul>
+
+                <h3 style="margin-top:12px;">🏭 Промышленность и производство</h3>
+                <ul>
+                    <li><strong>RuTech</strong> — смартфоны, планшеты, процессоры (RuCore)</li>
+                    <li><strong>RuComp</strong> — ноутбуки и ПК с RuOS</li>
+                    <li><strong>RuAuto</strong> — государственные автомобили</li>
+                    <li><strong>RuGraphics</strong> — собственные видеокарты</li>
+                </ul>
+
+                <h3 style="margin-top:12px;">⚡ Энергетика</h3>
+                <ul>
+                    <li><strong>Атомные электростанции РНДР</strong> — безопасные, нового поколения (БН-1200)</li>
+                    <li><strong>Солнечные и ветряные фермы</strong> — в южных и прибрежных регионах</li>
+                    <li><strong>Гидроэлектростанции</strong> — на реках Сибири и Дальнего Востока</li>
+                    <li><strong>Термоядерная энергия</strong> — экспериментальные реакторы (к 2040 году)</li>
+                    <li><strong>Единая энергосистема РНДР</strong> — управляется через RuGemini</li>
+                </ul>
+
+                <h3 style="margin-top:12px;">🚄 Транспортные технологии</h3>
+                <ul>
+                    <li><strong>Скоростные поезда</strong> — до 400 км/ч, связывают все регионы</li>
+                    <li><strong>Аэротакси</strong> — электрические вертикальные взлёты (для экстренных служб)</li>
+                    <li><strong>Электробусы и трамваи</strong> — весь общественный транспорт на электротяге</li>
+                    <li><strong>Магнитные подушки</strong> — разработка для сверхскоростных магистралей</li>
+                    <li><strong>RuPost</strong> — государственная почтовая служба с дронами</li>
+                </ul>
+
+                <h3 style="margin-top:12px;">🌿 Экологические технологии</h3>
+                <ul>
+                    <li><strong>Заповедники и заказники</strong> — с полным контролем через RuStar</li>
+                    <li><strong>Дроны для мониторинга</strong> — выявление браконьерства и загрязнений</li>
+                    <li><strong>Переработка отходов</strong> — замкнутый цикл, без свалок</li>
+                    <li><strong>Чистые фильтры</strong> — на всех заводах и ТЭЦ</li>
+                    <li><strong>Красная книга РНДР</strong> — интегрирована в школьное образование</li>
+                </ul>
+
+                <h3 style="margin-top:12px;">🔭 Космические технологии</h3>
+                <ul>
+                    <li><strong>Космодром «Вудоялы»</strong> — запуск спутников и ракет</li>
+                    <li><strong>Ракеты:</strong> «Сура», «Вудоял», «Яншихово», «Единство»</li>
+                    <li><strong>Корабли:</strong> «Рассвет», «Порядок», «Будущее»</li>
+                    <li><strong>Орбитальная станция «Рассвет»</strong></li>
+                    <li><strong>Лунная база «Порядок»</strong> (после 2045 года)</li>
+                </ul>
+
+                <h3 style="margin-top:12px;">🛡️ Оборонные технологии</h3>
+                <ul>
+                    <li><strong>Ядерный щит РНДР</strong> — арсенал больше, чем у США</li>
+                    <li><strong>RuStar Defence</strong> — военная спутниковая система</li>
+                    <li><strong>БПЛА РНДР</strong> — беспилотники для разведки и обороны</li>
+                    <li><strong>ПВО РНДР</strong> — полная защита воздушного пространства</li>
+                </ul>
+
+                <h3 style="margin-top:12px;">🔬 Научные технологии</h3>
+                <ul>
+                    <li><strong>Академия наук РНДР</strong> — главный научный центр</li>
+                    <li><strong>Квантовые компьютеры</strong> — для RuGemini и криптографии</li>
+                    <li><strong>Генетическая медицина</strong> — продолжительность жизни 90+ лет</li>
+                </ul>
+
+                <p style="margin-top:16px; color:#6a7f92;">Все технологии РНДР — полностью независимы от внешних поставщиков.</p>
+            `,
+            services: `
+                <h2>🏛️ Госуслуги РНДР</h2>
+                <p style="margin-bottom:8px;">Единый портал государственных услуг. Все сервисы доступны через RuID.</p>
+                <div class="service-grid">
+                    <div class="service-item" onclick="openModal('service_passport')">
+                        🪪 Паспорт и документы
+                        <span>Получение, замена, RuID</span>
+                    </div>
+                    <div class="service-item" onclick="openModal('service_taxes')">
+                        💰 Налоги и финансы
+                        <span>Платежи, декларации, субсидии</span>
+                    </div>
+                    <div class="service-item" onclick="openModal('service_benefits')">
+                        🧑‍🧑‍🧒 Пособия и выплаты
+                        <span>Семьи, дети, животные</span>
+                    </div>
+                    <div class="service-item" onclick="openModal('service_medicine')">
+                        🏥 Медицина
+                        <span>Запись к врачу, полис, аптеки</span>
+                    </div>
+                    <div class="service-item" onclick="openModal('service_education')">
+                        📚 Образование
+                        <span>Школы, вузы, RuMir Education</span>
+                    </div>
+                    <div class="service-item" onclick="openModal('service_transport')">
+                        🚗 Транспорт
+                        <span>Права, авто, штрафы</span>
+                    </div>
+                    <div class="service-item" onclick="openModal('service_animals')">
+                        🐾 Животные
+                        <span>Регистрация, пособие, лечение</span>
+                    </div>
+                    <div class="service-item" onclick="openModal('service_ecology')">
+                        🌿 Экология
+                        <span>Заповедники, штрафы, жалобы</span>
+                    </div>
+                    <div class="service-item" onclick="openModal('service_culture')">
+                        🎭 Культура
+                        <span>Театры, музеи, билеты</span>
+                    </div>
+                    <div class="service-item" onclick="openModal('service_sport_serv')">
+                        ⚽ Спорт
+                        <span>Секции, соревнования, федерации</span>
+                    </div>
+                    <div class="service-item" onclick="openModal('service_defence')">
+                        🛡️ Оборона
+                        <span>Воинский учёт, сборы, форма</span>
+                    </div>
+                    <div class="service-item" onclick="openModal('service_feedback')">
+                        📨 Обратная связь
+                        <span>Жалобы, предложения, вопросы</span>
+                    </div>
+                </div>
+                <p style="margin-top:12px; font-size:14px; color:#6a7f92;">🔒 Все услуги защищены RuGemini. Вход по RuID.</p>
+            `,
+            service_passport: serviceDetails.passport,
+            service_taxes: serviceDetails.taxes,
+            service_benefits: serviceDetails.benefits,
+            service_medicine: serviceDetails.medicine,
+            service_education: serviceDetails.education,
+            service_transport: serviceDetails.transport,
+            service_animals: serviceDetails.animals,
+            service_ecology: serviceDetails.ecology,
+            service_culture: serviceDetails.culture,
+            service_sport_serv: serviceDetails.sport_serv,
+            service_defence: serviceDetails.defence,
+            service_feedback: serviceDetails.feedback,
+
+            // НОВЫЕ РАЗДЕЛЫ
+            history: `
+                <h2>📜 История РНДР</h2>
+                <p><strong>2026 год</strong> — рождение идеи. 23 августа — замысел, 24 августа — утверждение Конституции и символов.</p>
+                <p><strong>2027 год</strong> — запуск RuOS и RuGPT.</p>
+                <p><strong>2028 год</strong> — Соглашение с РФ: Москва становится витриной.</p>
+                <p><strong>2030 год</strong> — принятие Конституции, закрытие границ.</p>
+                <p><strong>2035 год</strong> — нулевая преступность, сеть скоростных поездов.</p>
+                <p><strong>2040 год</strong> — продолжительность жизни 90+ лет.</p>
+                <p><strong>2045 год</strong> — вхождение стран бывшего СССР.</p>
+                <p><strong>2046 год</strong> — вхождение Польши, Финляндии, восстановление границ империи.</p>
+                <p><strong>2055 год</strong> — население 1 млрд, экономика №1 в мире.</p>
+                <p style="margin-top:12px; color:#6a7f92;">📖 Полная летопись доступна в Telegram-канале.</p>
+            `,
+            sport: `
+                <h2>🏅 Спорт в РНДР</h2>
+                <p><strong>Национальные виды спорта:</strong> футбол, хоккей, биатлон, шахматы, киберспорт.</p>
+                <p><strong>Инфраструктура:</strong> стадионы, ледовые арены, бассейны, киберспортивные арены.</p>
+                <p><strong>Соревнования:</strong> Чемпионат РНДР по футболу, Кубок РНДР по хоккею, Спартакиада РНДР.</p>
+                <p><strong>Киберспорт:</strong> официальный вид спорта, игры на RuXbox и RuSteam.</p>
+                <p><strong>Девиз спорта:</strong> «Сила — в порядке. Порядок — в единстве. Единство — в спорте.»</p>
+                <p style="margin-top:12px; color:#6a7f92;">🏆 Секции — бесплатные для детей до 16 лет.</p>
+            `,
+            ecology: `
+                <h2>🌱 Экология РНДР</h2>
+                <p><strong>Красная книга РНДР</strong> — охрана редких видов.</p>
+                <p><strong>Заповедники и заказники</strong> — полная охрана, контроль через RuStar.</p>
+                <p><strong>Браконьерство</strong> — тяжкое преступление, штрафы до 5 млн ₽, тюрьма до 15 лет.</p>
+                <p><strong>Переработка отходов</strong> — замкнутый цикл, без свалок.</p>
+                <p><strong>Чистые фильтры</strong> — на всех заводах и ТЭЦ.</p>
+                <p><strong>Экологическое воспитание</strong> — Красная книга в школах, уроки экологии.</p>
+                <p style="margin-top:12px; color:#6a7f92;">🌳 Сообщение о нарушении — до 200 000 ₽ вознаграждения.</p>
+            `,
+            laws: `
+                <h2>⚖️ Ключевые законы</h2>
+                <ul>
+                    <li><strong>Защита животных</strong> — запрет на выбрасывание, бесплатное лечение, пособия</li>
+                    <li><strong>Экология</strong> — браконьерство — тяжкое преступление, штрафы до 5 млн ₽</li>
+                    <li><strong>Технологии</strong> — свои ОС, ИИ, связь</li>
+                    <li><strong>Структура</strong> — РФ (витрина) и РНДР (управление)</li>
+                </ul>
+            `,
+            future: `
+                <h2>🚀 Будущее РНДР к 2055 году</h2>
+                <ul>
+                    <li><strong>1 миллиард</strong> человек</li>
+                    <li><strong>Экономика №1</strong> в мире</li>
+                    <li><strong>90+ лет</strong> продолжительность жизни</li>
+                    <li><strong>Нулевая преступность</strong></li>
+                    <li><strong>Собственный космос</strong> и RuStar</li>
+                </ul>
+            `
+        };
+
+        function openModal(key) {
+            document.getElementById('modalBody').innerHTML = content[key] || '<p>Содержание не найдено.</p>';
+            document.getElementById('modal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('modal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+    </script>
+
+</body>
+</html>
