@@ -7,7 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <style>
-        /* ===== RESET & BASE ===== */
+        /* (весь CSS остаётся без изменений, кроме удаления стилей для region-select) */
         *,
         *::before,
         *::after {
@@ -54,7 +54,6 @@
             background: #f0f2f5;
         }
 
-        /* ===== PAYMENT CARD ===== */
         .payment-card {
             width: 100%;
             max-width: 440px;
@@ -65,7 +64,8 @@
             padding: 30px 24px 34px;
             box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.06);
             border: 1px solid var(--border-color);
-            transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+            transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), background 0.4s ease, border-color 0.4s ease,
+                box-shadow 0.4s ease;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -486,6 +486,15 @@
             font-weight: 500;
             color: var(--text-primary);
         }
+        .country-info .region-tag {
+            font-size: 11px;
+            background: rgba(255, 215, 0, 0.15);
+            color: #ffd54f;
+            padding: 0 10px;
+            border-radius: 30px;
+            font-weight: 600;
+            border: 1px solid rgba(255, 215, 0, 0.15);
+        }
         .country-info .refresh-btn {
             background: rgba(255, 255, 255, 0.06);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -628,10 +637,6 @@
             background: rgba(0, 230, 118, 0.1);
             box-shadow: 0 0 30px rgba(0, 230, 118, 0.05);
         }
-        .payment-methods .method-icon svg {
-            width: 28px;
-            height: 18px;
-        }
         .payment-methods .method-icon .fee-badge {
             font-size: 9px;
             background: rgba(255, 193, 7, 0.15);
@@ -691,7 +696,8 @@
             inset: -3px;
             border-radius: 50%;
             padding: 2px;
-            background: conic-gradient(from 0deg, transparent, rgba(255, 255, 255, 0.05), transparent 30%, transparent 70%, rgba(255, 255, 255, 0.05));
+            background: conic-gradient(from 0deg, transparent, rgba(255, 255, 255, 0.05), transparent 30%, transparent 70%,
+                    rgba(255, 255, 255, 0.05));
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
@@ -1320,6 +1326,10 @@
         .footer .method-name {
             color: rgba(255, 255, 255, 0.5);
         }
+        .footer .version {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.15);
+        }
 
         /* ===== TOAST ===== */
         .toast-container {
@@ -1779,6 +1789,11 @@
         body.light .country-info .country-name {
             color: #222;
         }
+        body.light .country-info .region-tag {
+            color: #b8860b;
+            background: rgba(184, 134, 11, 0.1);
+            border-color: rgba(184, 134, 11, 0.15);
+        }
         body.light .footer .method-name {
             color: #555;
         }
@@ -2034,7 +2049,7 @@
         <div class="section-title" data-i18n="region">📍 Текущий регион</div>
         <div class="info-row">
             <span class="label" data-i18n="country">Страна</span>
-            <span class="value" id="sidebarCountry">Определение...</span>
+            <span class="value" id="sidebarCountry">—</span>
         </div>
         <div class="info-row">
             <span class="label" data-i18n="currency">Валюта</span>
@@ -2065,10 +2080,12 @@
 
         <!-- КНОПКИ -->
         <button class="goods-btn" id="showGoodsBtn" data-i18n="all_goods">🛒 Все товары</button>
-        <button class="goods-btn" id="showQRBtn" style="background: linear-gradient(135deg, #2196f3, #0d47a1);" data-i18n="qr">📱 QR-код</button>
-        <button class="goods-btn" id="showChartBtn" style="background: linear-gradient(135deg, #ff9800, #e65100);" data-i18n="chart">📈 График курсов</button>
-        <!-- Новая кнопка для истории транзакций -->
-        <button class="goods-btn" id="showHistoryBtn" style="background: linear-gradient(135deg, #9c27b0, #6a1b9a);" data-i18n="history">📜 История транзакций</button>
+        <button class="goods-btn" id="showQRBtn" style="background: linear-gradient(135deg, #2196f3, #0d47a1);" data-i18n="qr">
+            📱 QR-код</button>
+        <button class="goods-btn" id="showChartBtn" style="background: linear-gradient(135deg, #ff9800, #e65100);"
+            data-i18n="chart">📈 График курсов</button>
+        <button class="goods-btn" id="showHistoryBtn" style="background: linear-gradient(135deg, #9c27b0, #6a1b9a);"
+            data-i18n="history">📜 История транзакций</button>
 
         <div class="section-title" data-i18n="instructions">📖 Инструкции</div>
         <div class="instructions" id="instructionsContainer">
@@ -2077,9 +2094,8 @@
 
         <div class="copyright">
             <strong>© 2026 WayPay.</strong> Все права защищены.<br />
-            Защищено и признано авторскими правами<br />
-            конституцией <strong>Организации Объединённых Наций</strong>.
-            <div class="small">Версия 4.0.0 — Без WayPay карты</div>
+            Версия <span id="versionDisplay">1.3.0</span> — Глобальная<br />
+            <span class="small">Защищено и признано авторскими правами</span>
         </div>
     </div>
 
@@ -2103,7 +2119,7 @@
                 <button class="modal-close" id="qrModalCloseBtn">✕</button>
             </div>
             <div class="qr-container">
-                <div class="qr-amount" id="qrAmount">0.00 USD</div>
+                <div class="qr-amount" id="qrAmount">0.00 ₽</div>
                 <div id="qrcode"></div>
                 <div style="font-size:13px;color:rgba(255,255,255,0.4);" data-i18n="scan_qr">Отсканируйте для оплаты</div>
             </div>
@@ -2159,7 +2175,7 @@
             <span class="brand">
                 <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
                 <span class="brand-name" id="brandName">WayPay</span>
-                <span class="brand-suffix" id="brandSuffix"></span>
+                <span class="brand-suffix" id="brandSuffix">🌍</span>
             </span>
             <div style="display:flex; align-items:center; gap:8px;">
                 <span class="status-badge" id="statusBadge">● Готов</span>
@@ -2173,6 +2189,7 @@
         <div class="country-info" id="countryInfo">
             <span class="flag" id="countryFlag">🌍</span>
             <span class="country-name" id="countryName">Определение...</span>
+            <span class="region-tag" id="regionTag">—</span>
             <span class="lock-icon">🔒</span>
             <span class="vpn-hint">(по IP)</span>
             <button class="refresh-btn" id="refreshCountryBtn" title="Обновить местоположение">🔄 Обновить</button>
@@ -2221,6 +2238,20 @@
                 <option value="AED">AED (د.إ)</option>
                 <option value="SAR">SAR (﷼)</option>
                 <option value="ZAR">ZAR (R)</option>
+                <option value="TRY">TRY (₺)</option>
+                <option value="UAH">UAH (₴)</option>
+                <option value="KZT">KZT (₸)</option>
+                <option value="BYN">BYN (Br)</option>
+                <option value="GEL">GEL (₾)</option>
+                <option value="AZN">AZN (₼)</option>
+                <option value="AMD">AMD (֏)</option>
+                <option value="MDL">MDL (L)</option>
+                <option value="RSD">RSD (дин)</option>
+                <option value="BGN">BGN (лв)</option>
+                <option value="RON">RON (lei)</option>
+                <option value="HKD">HKD ($)</option>
+                <option value="ILS">ILS (₪)</option>
+                <option value="NZD">NZD ($)</option>
             </select>
         </div>
 
@@ -2297,7 +2328,8 @@
         <button class="pay-btn" id="payBtn" aria-label="Оплатить корзину">
             <span class="btn-text">Оплатить корзину</span>
             <span class="btn-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /><path d="M12 5l7 7-7 7" /></svg>
             </span>
             <span class="spinner"></span>
         </button>
@@ -2305,9 +2337,11 @@
         <!-- FOOTER -->
         <div class="footer">
             <span class="brand-name" id="footerBrandName">WayPay</span>
-            <span class="brand-suffix" id="footerBrandSuffix"></span>
+            <span class="brand-suffix" id="footerBrandSuffix">🌍</span>
             <span class="dot">•</span>
             <span class="method-name" id="footerMethod">МИР</span>
+            <span class="dot">•</span>
+            <span class="version" id="footerVersion">v1.3.0</span>
         </div>
     </div>
 
@@ -2315,248 +2349,617 @@
         (function() {
             'use strict';
 
-            // ===== ДАННЫЕ СТРАН (без WayPay карты) =====
-            const COUNTRY_DATA = {
-                RU: { flag: '🇷🇺', name: 'Россия', currency: '₽', code: 'RUB', methods: [{ id: 'mir', label: 'МИР', fee: 0 }] },
-                US: { flag: '🇺🇸', name: 'США', currency: '$', code: 'USD', methods: [{ id: 'visa', label: 'Visa', fee: 0.005 },
-                        { id: 'mastercard', label: 'Mastercard', fee: 0.007 }, { id: 'paypal', label: 'PayPal',
-                            fee: 0.03 }
-                    ] },
-                GB: { flag: '🇬🇧', name: 'Великобритания', currency: '£', code: 'GBP', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'paypal', label: 'PayPal', fee: 0.03 }
-                    ] },
-                DE: { flag: '🇩🇪', name: 'Германия', currency: '€', code: 'EUR', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'paypal', label: 'PayPal', fee: 0.03 }
-                    ] },
-                FR: { flag: '🇫🇷', name: 'Франция', currency: '€', code: 'EUR', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'paypal', label: 'PayPal', fee: 0.03 }
-                    ] },
-                IT: { flag: '🇮🇹', name: 'Италия', currency: '€', code: 'EUR', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'paypal', label: 'PayPal', fee: 0.03 }
-                    ] },
-                ES: { flag: '🇪🇸', name: 'Испания', currency: '€', code: 'EUR', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'paypal', label: 'PayPal', fee: 0.03 }
-                    ] },
-                PT: { flag: '🇵🇹', name: 'Португалия', currency: '€', code: 'EUR', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'paypal', label: 'PayPal', fee: 0.03 }
-                    ] },
-                NL: { flag: '🇳🇱', name: 'Нидерланды', currency: '€', code: 'EUR', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'paypal', label: 'PayPal', fee: 0.03 }
-                    ] },
-                BE: { flag: '🇧🇪', name: 'Бельгия', currency: '€', code: 'EUR', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'paypal', label: 'PayPal', fee: 0.03 }
-                    ] },
-                AT: { flag: '🇦🇹', name: 'Австрия', currency: '€', code: 'EUR', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'paypal', label: 'PayPal', fee: 0.03 }
-                    ] },
-                CH: { flag: '🇨🇭', name: 'Швейцария', currency: '₣', code: 'CHF', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'paypal', label: 'PayPal', fee: 0.03 }
-                    ] },
-                SE: { flag: '🇸🇪', name: 'Швеция', currency: 'kr', code: 'SEK', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'paypal', label: 'PayPal', fee: 0.03 }
-                    ] },
-                NO: { flag: '🇳🇴', name: 'Норвегия', currency: 'kr', code: 'NOK', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'paypal', label: 'PayPal', fee: 0.03 }
-                    ] },
-                DK: { flag: '🇩🇰', name: 'Дания', currency: 'kr', code: 'DKK', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'paypal', label: 'PayPal', fee: 0.03 }
-                    ] },
-                PL: { flag: '🇵🇱', name: 'Польша', currency: 'zł', code: 'PLN', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'paypal', label: 'PayPal', fee: 0.03 }
-                    ] },
-                CZ: { flag: '🇨🇿', name: 'Чехия', currency: 'Kč', code: 'CZK', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'paypal', label: 'PayPal', fee: 0.03 }
-                    ] },
-                HU: { flag: '🇭🇺', name: 'Венгрия', currency: 'Ft', code: 'HUF', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'paypal', label: 'PayPal', fee: 0.03 }
-                    ] },
-                CN: { flag: '🇨🇳', name: 'Китай', currency: '¥', code: 'CNY', methods: [{ id: 'alipay', label: 'Alipay',
-                        fee: 0.005 }, { id: 'wechat', label: 'WeChat Pay', fee: 0.003 }
-                    ] },
-                IN: { flag: '🇮🇳', name: 'Индия', currency: '₹', code: 'INR', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'upi', label: 'UPI', fee: 0.001 }, { id: 'paypal', label: 'PayPal', fee: 0.03 }
-                    ] },
-                JP: { flag: '🇯🇵', name: 'Япония', currency: '¥', code: 'JPY', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'jcb', label: 'JCB', fee: 0.004 }, { id: 'paypal', label: 'PayPal', fee: 0.03 }
-                    ] },
-                BR: { flag: '🇧🇷', name: 'Бразилия', currency: 'R$', code: 'BRL', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'elo', label: 'Elo', fee: 0.004 }, { id: 'pix', label: 'Pix', fee: 0.001 },
-                        { id: 'paypal', label: 'PayPal', fee: 0.03 }
-                    ] },
-                CA: { flag: '🇨🇦', name: 'Канада', currency: '$', code: 'CAD', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'interac', label: 'Interac', fee: 0.002 }, { id: 'paypal', label: 'PayPal',
-                        fee: 0.03 }
-                    ] },
-                AU: { flag: '🇦🇺', name: 'Австралия', currency: '$', code: 'AUD', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'paypal', label: 'PayPal', fee: 0.03 }
-                    ] },
-                MX: { flag: '🇲🇽', name: 'Мексика', currency: '$', code: 'MXN', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'paypal', label: 'PayPal', fee: 0.03 }
-                    ] },
-                KR: { flag: '🇰🇷', name: 'Южная Корея', currency: '₩', code: 'KRW', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'kakao', label: 'Kakao Pay', fee: 0.002 }, { id: 'paypal', label: 'PayPal',
-                        fee: 0.03 }
-                    ] },
-                SG: { flag: '🇸🇬', name: 'Сингапур', currency: '$', code: 'SGD', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'paypal', label: 'PayPal', fee: 0.03 }
-                    ] },
-                AE: { flag: '🇦🇪', name: 'ОАЭ', currency: 'د.إ', code: 'AED', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'paypal', label: 'PayPal', fee: 0.03 }
-                    ] },
-                SA: { flag: '🇸🇦', name: 'Саудовская Аравия', currency: '﷼', code: 'SAR', methods: [{ id: 'visa',
-                        label: 'Visa', fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'paypal', label: 'PayPal', fee: 0.03 }
-                    ] },
-                ZA: { flag: '🇿🇦', name: 'ЮАР', currency: 'R', code: 'ZAR', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'paypal', label: 'PayPal', fee: 0.03 }
-                    ] },
-                TR: { flag: '🇹🇷', name: 'Турция', currency: '₺', code: 'TRY', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'paypal', label: 'PayPal', fee: 0.03 }
-                    ] },
-                UA: { flag: '🇺🇦', name: 'Украина', currency: '₴', code: 'UAH', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 }
-                    ] },
-                KZ: { flag: '🇰🇿', name: 'Казахстан', currency: '₸', code: 'KZT', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 }
-                    ] },
-                BY: { flag: '🇧🇾', name: 'Беларусь', currency: 'Br', code: 'BYN', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 }
-                    ] },
-                GE: { flag: '🇬🇪', name: 'Грузия', currency: '₾', code: 'GEL', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 }
-                    ] },
-                AZ: { flag: '🇦🇿', name: 'Азербайджан', currency: '₼', code: 'AZN', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 }
-                    ] },
-                AM: { flag: '🇦🇲', name: 'Армения', currency: '֏', code: 'AMD', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 }
-                    ] },
-                MD: { flag: '🇲🇩', name: 'Молдова', currency: 'L', code: 'MDL', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 }
-                    ] },
-                RS: { flag: '🇷🇸', name: 'Сербия', currency: 'дин', code: 'RSD', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 }
-                    ] },
-                HR: { flag: '🇭🇷', name: 'Хорватия', currency: '€', code: 'EUR', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'paypal', label: 'PayPal', fee: 0.03 }
-                    ] },
-                SK: { flag: '🇸🇰', name: 'Словакия', currency: '€', code: 'EUR', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'paypal', label: 'PayPal', fee: 0.03 }
-                    ] },
-                SI: { flag: '🇸🇮', name: 'Словения', currency: '€', code: 'EUR', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'paypal', label: 'PayPal', fee: 0.03 }
-                    ] },
-                BG: { flag: '🇧🇬', name: 'Болгария', currency: 'лв', code: 'BGN', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'paypal', label: 'PayPal', fee: 0.03 }
-                    ] },
-                RO: { flag: '🇷🇴', name: 'Румыния', currency: 'lei', code: 'RON', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'paypal', label: 'PayPal', fee: 0.03 }
-                    ] },
-                LT: { flag: '🇱🇹', name: 'Литва', currency: '€', code: 'EUR', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'paypal', label: 'PayPal', fee: 0.03 }
-                    ] },
-                LV: { flag: '🇱🇻', name: 'Латвия', currency: '€', code: 'EUR', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'paypal', label: 'PayPal', fee: 0.03 }
-                    ] },
-                EE: { flag: '🇪🇪', name: 'Эстония', currency: '€', code: 'EUR', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'paypal', label: 'PayPal', fee: 0.03 }
-                    ] },
-                CY: { flag: '🇨🇾', name: 'Кипр', currency: '€', code: 'EUR', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'paypal', label: 'PayPal', fee: 0.03 }
-                    ] },
-                MT: { flag: '🇲🇹', name: 'Мальта', currency: '€', code: 'EUR', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'paypal', label: 'PayPal', fee: 0.03 }
-                    ] },
-                LU: { flag: '🇱🇺', name: 'Люксембург', currency: '€', code: 'EUR', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'paypal', label: 'PayPal', fee: 0.03 }
-                    ] },
-                HK: { flag: '🇭🇰', name: 'Гонконг', currency: '$', code: 'HKD', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'paypal', label: 'PayPal', fee: 0.03 }
-                    ] },
-                IL: { flag: '🇮🇱', name: 'Израиль', currency: '₪', code: 'ILS', methods: [{ id: 'visa', label: 'Visa',
-                        fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'paypal', label: 'PayPal', fee: 0.03 }
-                    ] },
-                NZ: { flag: '🇳🇿', name: 'Новая Зеландия', currency: '$', code: 'NZD', methods: [{ id: 'visa',
-                        label: 'Visa', fee: 0.005 }, { id: 'mastercard', label: 'Mastercard', fee: 0.007 },
-                        { id: 'paypal', label: 'PayPal', fee: 0.03 }
-                    ] },
-            };
+            // ===== ВЕРСИЯ =====
+            const VERSION = '1.3.0';
 
-            const EU_COUNTRY_CODES = ['DE', 'FR', 'IT', 'ES', 'PT', 'NL', 'BE', 'AT', 'GR', 'IE', 'FI', 'HR', 'SK', 'SI', 'LT',
-                'LV', 'EE', 'CY', 'MT', 'LU'
-            ];
+            // ===== ПОЛНЫЙ СПИСОК СТРАН =====
+            const COUNTRY_DATA = {
+                // РОССИЯ — два варианта
+                RF: {
+                    flag: '🇷🇺',
+                    name: 'Россия (РФ)',
+                    currency: '₽',
+                    code: 'RUB',
+                    methods: [
+                        { id: 'mir', label: 'МИР', fee: 0, svg: '💳' },
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' }
+                    ]
+                },
+                RNDR: {
+                    flag: '🇷🇺',
+                    name: 'Россия (РНДР)',
+                    currency: '₽',
+                    code: 'RUB',
+                    methods: [
+                        { id: 'mir', label: 'МИР', fee: 0, svg: '💳' },
+                        { id: 'rupay', label: 'RuPay', fee: 0.002, svg: '💳' },
+                        { id: 'rucard', label: 'RuCard', fee: 0.003, svg: '💳' },
+                        { id: 'rubank', label: 'RuBank', fee: 0.001, svg: '🏦' },
+                        { id: 'rupay_qr', label: 'RuPay QR', fee: 0, svg: '📱' }
+                    ]
+                },
+                // ДРУГИЕ СТРАНЫ (глобальные)
+                US: {
+                    flag: '🇺🇸',
+                    name: 'США',
+                    currency: '$',
+                    code: 'USD',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                GB: {
+                    flag: '🇬🇧',
+                    name: 'Великобритания',
+                    currency: '£',
+                    code: 'GBP',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                DE: {
+                    flag: '🇩🇪',
+                    name: 'Германия',
+                    currency: '€',
+                    code: 'EUR',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                FR: {
+                    flag: '🇫🇷',
+                    name: 'Франция',
+                    currency: '€',
+                    code: 'EUR',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                IT: {
+                    flag: '🇮🇹',
+                    name: 'Италия',
+                    currency: '€',
+                    code: 'EUR',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                ES: {
+                    flag: '🇪🇸',
+                    name: 'Испания',
+                    currency: '€',
+                    code: 'EUR',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                PT: {
+                    flag: '🇵🇹',
+                    name: 'Португалия',
+                    currency: '€',
+                    code: 'EUR',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                NL: {
+                    flag: '🇳🇱',
+                    name: 'Нидерланды',
+                    currency: '€',
+                    code: 'EUR',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                BE: {
+                    flag: '🇧🇪',
+                    name: 'Бельгия',
+                    currency: '€',
+                    code: 'EUR',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                AT: {
+                    flag: '🇦🇹',
+                    name: 'Австрия',
+                    currency: '€',
+                    code: 'EUR',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                CH: {
+                    flag: '🇨🇭',
+                    name: 'Швейцария',
+                    currency: '₣',
+                    code: 'CHF',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                SE: {
+                    flag: '🇸🇪',
+                    name: 'Швеция',
+                    currency: 'kr',
+                    code: 'SEK',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                NO: {
+                    flag: '🇳🇴',
+                    name: 'Норвегия',
+                    currency: 'kr',
+                    code: 'NOK',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                DK: {
+                    flag: '🇩🇰',
+                    name: 'Дания',
+                    currency: 'kr',
+                    code: 'DKK',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                PL: {
+                    flag: '🇵🇱',
+                    name: 'Польша',
+                    currency: 'zł',
+                    code: 'PLN',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                CZ: {
+                    flag: '🇨🇿',
+                    name: 'Чехия',
+                    currency: 'Kč',
+                    code: 'CZK',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                HU: {
+                    flag: '🇭🇺',
+                    name: 'Венгрия',
+                    currency: 'Ft',
+                    code: 'HUF',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                CN: {
+                    flag: '🇨🇳',
+                    name: 'Китай',
+                    currency: '¥',
+                    code: 'CNY',
+                    methods: [
+                        { id: 'alipay', label: 'Alipay', fee: 0.005, svg: '📱' },
+                        { id: 'wechat', label: 'WeChat Pay', fee: 0.003, svg: '📱' }
+                    ]
+                },
+                IN: {
+                    flag: '🇮🇳',
+                    name: 'Индия',
+                    currency: '₹',
+                    code: 'INR',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'upi', label: 'UPI', fee: 0.001, svg: '📱' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                JP: {
+                    flag: '🇯🇵',
+                    name: 'Япония',
+                    currency: '¥',
+                    code: 'JPY',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'jcb', label: 'JCB', fee: 0.004, svg: '💳' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                BR: {
+                    flag: '🇧🇷',
+                    name: 'Бразилия',
+                    currency: 'R$',
+                    code: 'BRL',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'elo', label: 'Elo', fee: 0.004, svg: '💳' },
+                        { id: 'pix', label: 'Pix', fee: 0.001, svg: '📱' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                CA: {
+                    flag: '🇨🇦',
+                    name: 'Канада',
+                    currency: '$',
+                    code: 'CAD',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'interac', label: 'Interac', fee: 0.002, svg: '💳' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                AU: {
+                    flag: '🇦🇺',
+                    name: 'Австралия',
+                    currency: '$',
+                    code: 'AUD',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                MX: {
+                    flag: '🇲🇽',
+                    name: 'Мексика',
+                    currency: '$',
+                    code: 'MXN',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                KR: {
+                    flag: '🇰🇷',
+                    name: 'Южная Корея',
+                    currency: '₩',
+                    code: 'KRW',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'kakao', label: 'Kakao Pay', fee: 0.002, svg: '📱' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                SG: {
+                    flag: '🇸🇬',
+                    name: 'Сингапур',
+                    currency: '$',
+                    code: 'SGD',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                AE: {
+                    flag: '🇦🇪',
+                    name: 'ОАЭ',
+                    currency: 'د.إ',
+                    code: 'AED',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                SA: {
+                    flag: '🇸🇦',
+                    name: 'Саудовская Аравия',
+                    currency: '﷼',
+                    code: 'SAR',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                ZA: {
+                    flag: '🇿🇦',
+                    name: 'ЮАР',
+                    currency: 'R',
+                    code: 'ZAR',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                TR: {
+                    flag: '🇹🇷',
+                    name: 'Турция',
+                    currency: '₺',
+                    code: 'TRY',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                UA: {
+                    flag: '🇺🇦',
+                    name: 'Украина',
+                    currency: '₴',
+                    code: 'UAH',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' }
+                    ]
+                },
+                KZ: {
+                    flag: '🇰🇿',
+                    name: 'Казахстан',
+                    currency: '₸',
+                    code: 'KZT',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' }
+                    ]
+                },
+                BY: {
+                    flag: '🇧🇾',
+                    name: 'Беларусь',
+                    currency: 'Br',
+                    code: 'BYN',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' }
+                    ]
+                },
+                GE: {
+                    flag: '🇬🇪',
+                    name: 'Грузия',
+                    currency: '₾',
+                    code: 'GEL',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' }
+                    ]
+                },
+                AZ: {
+                    flag: '🇦🇿',
+                    name: 'Азербайджан',
+                    currency: '₼',
+                    code: 'AZN',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' }
+                    ]
+                },
+                AM: {
+                    flag: '🇦🇲',
+                    name: 'Армения',
+                    currency: '֏',
+                    code: 'AMD',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' }
+                    ]
+                },
+                MD: {
+                    flag: '🇲🇩',
+                    name: 'Молдова',
+                    currency: 'L',
+                    code: 'MDL',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' }
+                    ]
+                },
+                RS: {
+                    flag: '🇷🇸',
+                    name: 'Сербия',
+                    currency: 'дин',
+                    code: 'RSD',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' }
+                    ]
+                },
+                HR: {
+                    flag: '🇭🇷',
+                    name: 'Хорватия',
+                    currency: '€',
+                    code: 'EUR',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                SK: {
+                    flag: '🇸🇰',
+                    name: 'Словакия',
+                    currency: '€',
+                    code: 'EUR',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                SI: {
+                    flag: '🇸🇮',
+                    name: 'Словения',
+                    currency: '€',
+                    code: 'EUR',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                BG: {
+                    flag: '🇧🇬',
+                    name: 'Болгария',
+                    currency: 'лв',
+                    code: 'BGN',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                RO: {
+                    flag: '🇷🇴',
+                    name: 'Румыния',
+                    currency: 'lei',
+                    code: 'RON',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                LT: {
+                    flag: '🇱🇹',
+                    name: 'Литва',
+                    currency: '€',
+                    code: 'EUR',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                LV: {
+                    flag: '🇱🇻',
+                    name: 'Латвия',
+                    currency: '€',
+                    code: 'EUR',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                EE: {
+                    flag: '🇪🇪',
+                    name: 'Эстония',
+                    currency: '€',
+                    code: 'EUR',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                CY: {
+                    flag: '🇨🇾',
+                    name: 'Кипр',
+                    currency: '€',
+                    code: 'EUR',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                MT: {
+                    flag: '🇲🇹',
+                    name: 'Мальта',
+                    currency: '€',
+                    code: 'EUR',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                LU: {
+                    flag: '🇱🇺',
+                    name: 'Люксембург',
+                    currency: '€',
+                    code: 'EUR',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                HK: {
+                    flag: '🇭🇰',
+                    name: 'Гонконг',
+                    currency: '$',
+                    code: 'HKD',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                IL: {
+                    flag: '🇮🇱',
+                    name: 'Израиль',
+                    currency: '₪',
+                    code: 'ILS',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                },
+                NZ: {
+                    flag: '🇳🇿',
+                    name: 'Новая Зеландия',
+                    currency: '$',
+                    code: 'NZD',
+                    methods: [
+                        { id: 'visa', label: 'Visa', fee: 0.005, svg: '💳' },
+                        { id: 'mastercard', label: 'Mastercard', fee: 0.007, svg: '💳' },
+                        { id: 'paypal', label: 'PayPal', fee: 0.03, svg: '💰' }
+                    ]
+                }
+            };
 
             function getCountryData(code) {
                 if (COUNTRY_DATA[code]) return COUNTRY_DATA[code];
-                if (EU_COUNTRY_CODES.includes(code)) {
-                    return { ...COUNTRY_DATA.DE, flag: COUNTRY_DATA[code]?.flag || '🇪🇺' };
-                }
-                return COUNTRY_DATA.RU;
+                // Fallback — РНДР
+                return COUNTRY_DATA.RNDR;
             }
 
-            function mapCountry(code) {
-                if (COUNTRY_DATA[code]) return code;
-                if (EU_COUNTRY_CODES.includes(code)) return 'DE';
-                return 'RU';
-            }
-
-            function isEU(countryCode) {
-                return EU_COUNTRY_CODES.includes(countryCode) || countryCode === 'DE' || countryCode === 'FR' || countryCode ===
-                    'IT' || countryCode === 'ES' || countryCode === 'PT' || countryCode === 'NL' || countryCode === 'BE' ||
-                    countryCode === 'AT' || countryCode === 'GR' || countryCode === 'IE' || countryCode === 'FI' ||
-                    countryCode === 'HR' || countryCode === 'SK' || countryCode === 'SI' || countryCode === 'LT' ||
-                    countryCode === 'LV' || countryCode === 'EE' || countryCode === 'CY' || countryCode === 'MT' ||
-                    countryCode === 'LU' || countryCode === 'HR' || countryCode === 'SK' || countryCode === 'SI' ||
-                    countryCode === 'LT' || countryCode === 'LV' || countryCode === 'EE' || countryCode === 'CY' ||
-                    countryCode === 'MT' || countryCode === 'LU';
-            }
-
-            function getBrandName(countryCode) {
-                if (countryCode === 'RU') return 'WayPay RU';
-                if (countryCode === 'BY') return 'WayPay BY';
-                const base = 'WayPay';
-                if (isEU(countryCode)) return base + ' EU';
-                return base;
+            function getDefaultMethod(countryCode) {
+                const data = getCountryData(countryCode);
+                return data.methods[0] || { id: 'default', label: 'Оплата', fee: 0 };
             }
 
             // ===== ГЕНЕРАТОР ТОВАРОВ =====
@@ -2583,9 +2986,11 @@
                     '1 уп (10 шт)', '1 л', '0.5 л', '0.5 кг', '1 л', '0.5 кг', '1 шт',
                     '1 кг', '0.5 кг', '0.5 кг', '1 кг', '1 кг', '1 кг',
                     '1 кг', '1 кг', '0.5 кг', '0.5 кг', '1 кг', '1 кг', '1 кг',
-                    '1 уп (100 г)', '1 уп (250 г)', '1 уп (200 г)', '1 уп (200 г)', '1 уп (200 г)', '1 уп (200 г)', '1 уп (200 г)',
+                    '1 уп (100 г)', '1 уп (250 г)', '1 уп (200 г)', '1 уп (200 г)', '1 уп (200 г)', '1 уп (200 г)',
+                    '1 уп (200 г)',
                     '1 уп (200 г)', '1 уп (200 г)', '1 уп (200 г)', '1 уп (200 г)', '1 кг', '1 кг',
-                    '1 уп (250 г)', '1 уп (250 г)', '1 уп (250 г)', '1 уп (250 г)', '1 уп (250 г)', '1 уп (250 г)', '1 уп (250 г)',
+                    '1 уп (250 г)', '1 уп (250 г)', '1 уп (250 г)', '1 уп (250 г)', '1 уп (250 г)', '1 уп (250 г)',
+                    '1 уп (250 г)',
                     '1 л', '1 л', '1 л', '1 уп (50 г)',
                     '1 кг', '1 кг', '1 кг', '1 кг', '1 кг', '1 кг',
                     '1 кг', '1 кг', '1 кг', '1 кг', '1 кг', '1 уп (100 г)',
@@ -2594,8 +2999,10 @@
                     '1 кг', '1 кг', '1 кг', '1 кг', '1 кг', '1 кг',
                     '1 шт', '1 шт', '1 шт', '1 шт', '1 шт', '1 шт'
                 ];
-                const usedEmojis = emojis || ['🍞', '🥛', '🍏', '🧃', '🍫', '🧀', '💧', '🥚', '🧈', '🥛', '🧀', '🥛', '🍦', '🥓', '🍗',
-                    '🍚', '🌾', '🍝', '🍬', '🍵', '☕', '🍪', '🍯', '🍇', '🍌', '🍊', '🍎', '🥝', '🍉', '🍓', '🍒', '🍑', '🥑', '🍍',
+                const usedEmojis = emojis || ['🍞', '🥛', '🍏', '🧃', '🍫', '🧀', '💧', '🥚', '🧈', '🥛', '🧀', '🥛', '🍦', '🥓',
+                    '🍗',
+                    '🍚', '🌾', '🍝', '🍬', '🍵', '☕', '🍪', '🍯', '🍇', '🍌', '🍊', '🍎', '🥝', '🍉', '🍓', '🍒', '🍑',
+                    '🥑', '🍍',
                     '🥭', '🍋', '🍈', '🍐', '🍊'
                 ];
 
@@ -2736,67 +3143,6 @@
                 }
             };
 
-            // ===== ГЕНЕРАЦИЯ ИНСТРУКЦИЙ (без WayPay) =====
-            function generateInstructions(countryCode) {
-                const data = getCountryData(countryCode);
-                const flag = data.flag || '🌍';
-                const name = data.name || countryCode;
-                const methods = data.methods || [];
-                if (methods.length === 0) {
-                    return [{
-                        flag,
-                        name,
-                        methods: [{ id: 'fallback', label: 'Оплата', desc_ru: 'Оплата доступна.', desc_en: 'Payment available.' }]
-                    }];
-                }
-                const methodData = methods.map(m => {
-                    let desc_ru = `Оплата через ${m.label}.`;
-                    let desc_en = `Pay with ${m.label}.`;
-                    if (m.id === 'mir') {
-                        desc_ru = 'Приложите карту МИР к NFC-терминалу. Оплата мгновенная.';
-                        desc_en = 'Tap your MIR card to the NFC terminal. Instant payment.';
-                    } else if (m.id === 'visa') {
-                        desc_ru = 'Приложите карту Visa или используйте Apple Pay/Google Pay.';
-                        desc_en = 'Tap Visa card or use Apple Pay/Google Pay.';
-                    } else if (m.id === 'mastercard') {
-                        desc_ru = 'Приложите карту Mastercard — бесконтактно.';
-                        desc_en = 'Tap Mastercard — contactless.';
-                    } else if (m.id === 'paypal') {
-                        desc_ru = 'Войдите в аккаунт PayPal и подтвердите оплату.';
-                        desc_en = 'Login to PayPal and confirm payment.';
-                    } else if (m.id === 'alipay') {
-                        desc_ru = 'Отсканируйте QR-код или используйте NFC с Alipay.';
-                        desc_en = 'Scan QR-code or use NFC with Alipay.';
-                    } else if (m.id === 'wechat') {
-                        desc_ru = 'Оплата через WeChat Pay.';
-                        desc_en = 'Pay via WeChat Pay.';
-                    } else if (m.id === 'upi') {
-                        desc_ru = 'Используйте UPI для мгновенной оплаты.';
-                        desc_en = 'Use UPI for instant payment.';
-                    } else if (m.id === 'jcb') {
-                        desc_ru = 'Приложите карту JCB.';
-                        desc_en = 'Tap JCB card.';
-                    } else if (m.id === 'elo') {
-                        desc_ru = 'Оплата картой Elo.';
-                        desc_en = 'Pay with Elo card.';
-                    } else if (m.id === 'pix') {
-                        desc_ru = 'Мгновенная оплата через Pix.';
-                        desc_en = 'Instant payment via Pix.';
-                    } else if (m.id === 'interac') {
-                        desc_ru = 'Оплата через Interac.';
-                        desc_en = 'Pay with Interac.';
-                    } else if (m.id === 'kakao') {
-                        desc_ru = 'Оплата через Kakao Pay.';
-                        desc_en = 'Pay with Kakao Pay.';
-                    } else {
-                        desc_ru = `Оплата через ${m.label}.`;
-                        desc_en = `Pay with ${m.label}.`;
-                    }
-                    return { ...m, desc_ru, desc_en };
-                });
-                return [{ flag, name, methods: methodData }];
-            }
-
             // ===== DOM REFS =====
             const goodsListEl = document.getElementById('goodsList');
             const cartTotalValue = document.getElementById('cartTotalValue');
@@ -2815,6 +3161,7 @@
             const goodsTitle = document.getElementById('goodsTitle');
             const countryFlag = document.getElementById('countryFlag');
             const countryName = document.getElementById('countryName');
+            const regionTag = document.getElementById('regionTag');
             const refreshBtn = document.getElementById('refreshCountryBtn');
             const currencySwitcher = document.getElementById('currencySwitcher');
             const currencySelect = document.getElementById('currencySelect');
@@ -2833,6 +3180,7 @@
             const brandSuffixEl = document.getElementById('brandSuffix');
             const footerBrandName = document.getElementById('footerBrandName');
             const footerBrandSuffix = document.getElementById('footerBrandSuffix');
+            const footerVersion = document.getElementById('footerVersion');
 
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('overlay');
@@ -2845,6 +3193,7 @@
             const langSelect = document.getElementById('langSelect');
             const themeSelect = document.getElementById('themeSelect');
             const wavepayBalanceEl = document.getElementById('wavepayBalance');
+            const versionDisplay = document.getElementById('versionDisplay');
 
             const modalOverlay = document.getElementById('modalOverlay');
             const modalCloseBtn = document.getElementById('modalCloseBtn');
@@ -2863,7 +3212,6 @@
             const showChartBtn = document.getElementById('showChartBtn');
             let chartInstance = null;
 
-            // История
             const historyModalOverlay = document.getElementById('historyModalOverlay');
             const historyModalCloseBtn = document.getElementById('historyModalCloseBtn');
             const showHistoryBtn = document.getElementById('showHistoryBtn');
@@ -2887,12 +3235,12 @@
             let currentLang = 'ru';
             let currentTheme = 'dark';
             let wavepayBalance = 0;
-            let realCountryCode = 'RU';
+            let currentCountryCode = 'RNDR'; // RF или RNDR
             let selectedMethod = null;
             let currentGoods = [];
             let currentCurrency = '₽';
             let currentCountryData = null;
-            let selectedCurrency = 'USD';
+            let selectedCurrency = 'RUB';
             let baseGoods = [];
             let rates = {};
             let ratesLoaded = false;
@@ -2983,22 +3331,21 @@
                 const cartLabel = document.querySelector('.cart-total-label');
                 if (cartLabel) cartLabel.textContent = total === 0 ? t('empty_cart') : t('cart');
                 payBtn.querySelector('.btn-text').textContent = total === 0 ? t('add_items') : t('pay');
-                updateInstructions(realCountryCode);
-                updateBranding(realCountryCode);
+                updateInstructions(currentCountryCode);
+                updateBranding(currentCountryCode);
             }
 
             // ===== БРЕНДИНГ =====
             function updateBranding(countryCode) {
-                const brand = getBrandName(countryCode);
-                const parts = brand.split(' ');
-                const main = parts[0];
-                const suffix = parts.slice(1).join(' ');
-                brandNameEl.textContent = main;
-                brandSuffixEl.textContent = suffix ? ' ' + suffix : '';
-                footerBrandName.textContent = main;
-                footerBrandSuffix.textContent = suffix ? ' ' + suffix : '';
+                const data = getCountryData(countryCode);
+                const suffix = data.name.includes('РНДР') ? 'РНДР' : (data.name.includes('РФ') ? 'РФ' : '🌍');
+                brandSuffixEl.textContent = suffix;
+                footerBrandSuffix.textContent = suffix;
                 const sidebarTitle = document.querySelector('.sidebar h2');
-                if (sidebarTitle) sidebarTitle.textContent = `⚙️ ${brand}`;
+                if (sidebarTitle) sidebarTitle.textContent = `⚙️ WayPay ${suffix}`;
+                // Версия
+                footerVersion.textContent = `v${VERSION}`;
+                versionDisplay.textContent = VERSION;
             }
 
             // ===== ТЕМА =====
@@ -3011,20 +3358,37 @@
 
             // ===== ИНСТРУКЦИИ =====
             function updateInstructions(countryCode) {
-                const instructionsData = generateInstructions(countryCode);
-                const data = instructionsData[0];
+                const data = getCountryData(countryCode);
                 if (!data || data.methods.length === 0) {
                     instructionsContainer.innerHTML =
                         `<div class="inst-item"><div class="inst-desc">${t('no_instructions')}</div></div>`;
                     return;
                 }
                 let html = '';
-                const descKey = currentLang === 'ru' ? 'desc_ru' : 'desc_en';
+                const descMap = {
+                    'mir': 'Приложите карту МИР к NFC-терминалу. Оплата мгновенная.',
+                    'visa': 'Приложите карту Visa или используйте Apple Pay/Google Pay.',
+                    'mastercard': 'Приложите карту Mastercard — бесконтактно.',
+                    'paypal': 'Войдите в аккаунт PayPal и подтвердите оплату.',
+                    'rupay': 'Оплата через RuPay — государственную платёжную систему РНДР.',
+                    'rucard': 'Оплата картой RuCard — аналог Visa/Mastercard, но свой.',
+                    'rubank': 'Перевод через RuBank — мобильное приложение.',
+                    'rupay_qr': 'Отсканируйте QR-код через приложение RuPay.',
+                    'alipay': 'Отсканируйте QR-код или используйте NFC с Alipay.',
+                    'wechat': 'Оплата через WeChat Pay.',
+                    'upi': 'Используйте UPI для мгновенной оплаты.',
+                    'jcb': 'Приложите карту JCB.',
+                    'elo': 'Оплата картой Elo.',
+                    'pix': 'Мгновенная оплата через Pix.',
+                    'interac': 'Оплата через Interac.',
+                    'kakao': 'Оплата через Kakao Pay.'
+                };
                 data.methods.forEach(m => {
+                    const desc = descMap[m.id] || `Оплата через ${m.label}.`;
                     html += `
                         <div class="inst-item">
                             <div class="inst-title"><span class="flag">${data.flag}</span> ${data.name} — ${m.label}</div>
-                            <div class="inst-desc">${m[descKey]}</div>
+                            <div class="inst-desc">${desc}</div>
                         </div>
                     `;
                 });
@@ -3035,6 +3399,7 @@
             function updateSidebarInfo(countryCode) {
                 const data = getCountryData(countryCode);
                 sidebarCountry.textContent = `${data.flag || '🌍'} ${data.name || countryCode}`;
+                sidebarCurrency.textContent = data.currency || '₽';
                 sidebarMethod.textContent = selectedMethod ? selectedMethod.label : '—';
             }
 
@@ -3048,25 +3413,59 @@
                     .then(data => {
                         rates = data.rates;
                         ratesLoaded = true;
-                        updateRateDisplayForCountry(realCountryCode);
+                        updateRateDisplayForCountry(currentCountryCode);
                         return rates;
                     })
                     .catch(() => {
-                        rates = { RUB: 90.0, USD: 1.0, GBP: 0.79, EUR: 0.92, CNY: 7.15, INR: 83.0, JPY: 148.0, BRL: 5.0,
-                            CAD: 1.35, AUD: 1.52, CHF: 0.88, SEK: 10.3, NOK: 10.6, DKK: 6.9, PLN: 4.0, CZK: 23.0,
-                            HUF: 360.0, MXN: 17.0, KRW: 1330.0, SGD: 1.34, AED: 3.67, SAR: 3.75, ZAR: 18.5, TRY: 30.0,
-                            UAH: 38.0, KZT: 450.0, BYN: 3.2, GEL: 2.65, AZN: 1.7, AMD: 400.0, MDL: 17.5, RSD: 107.0,
-                            BGN: 1.85, RON: 4.6, HKD: 7.8, ILS: 3.7, NZD: 1.63
+                        // Fallback
+                        rates = {
+                            RUB: 90.0,
+                            USD: 1.0,
+                            GBP: 0.79,
+                            EUR: 0.92,
+                            CNY: 7.15,
+                            INR: 83.0,
+                            JPY: 148.0,
+                            BRL: 5.0,
+                            CAD: 1.35,
+                            AUD: 1.52,
+                            CHF: 0.88,
+                            SEK: 10.3,
+                            NOK: 10.6,
+                            DKK: 6.9,
+                            PLN: 4.0,
+                            CZK: 23.0,
+                            HUF: 360.0,
+                            MXN: 17.0,
+                            KRW: 1330.0,
+                            SGD: 1.34,
+                            AED: 3.67,
+                            SAR: 3.75,
+                            ZAR: 18.5,
+                            TRY: 30.0,
+                            UAH: 38.0,
+                            KZT: 450.0,
+                            BYN: 3.2,
+                            GEL: 2.65,
+                            AZN: 1.7,
+                            AMD: 400.0,
+                            MDL: 17.5,
+                            RSD: 107.0,
+                            BGN: 1.85,
+                            RON: 4.6,
+                            HKD: 7.8,
+                            ILS: 3.7,
+                            NZD: 1.63
                         };
                         ratesLoaded = true;
-                        updateRateDisplayForCountry(realCountryCode);
+                        updateRateDisplayForCountry(currentCountryCode);
                         return rates;
                     });
             }
 
             function updateRateDisplayForCountry(countryCode) {
                 if (!ratesLoaded) return;
-                let currencyCode = selectedCurrency;
+                const currencyCode = selectedCurrency;
                 const rate = rates[currencyCode];
                 if (!rate) {
                     rateValue1.textContent = '—';
@@ -3077,7 +3476,8 @@
                 }
                 const usdToLocal = rate;
                 const localToUsd = 1 / rate;
-                rateValue1.textContent = `${usdToLocal.toFixed(4)} ${currencyCode}`;
+                const symbol = currencyCode === 'RUB' ? '₽' : currencyCode;
+                rateValue1.textContent = `${usdToLocal.toFixed(2)} ${symbol}`;
                 rateValue2.textContent = `1 ${currencyCode}`;
                 rateValue2b.textContent = `${localToUsd.toFixed(4)}`;
                 const now = new Date();
@@ -3091,11 +3491,6 @@
                 return data.methods || [{ id: 'default', label: 'Оплата', fee: 0 }];
             }
 
-            function getDefaultMethod(countryCode) {
-                const methods = getMethodsForCountry(countryCode);
-                return methods[0] || { id: 'default', label: 'Оплата', fee: 0 };
-            }
-
             function getMethodById(countryCode, id) {
                 const methods = getMethodsForCountry(countryCode);
                 return methods.find(m => m.id === id) || methods[0];
@@ -3107,17 +3502,18 @@
                 if (baseGoods.length === 0) {
                     baseGoods = currentGoods.map(g => ({ ...g }));
                 }
-                const targetRate = rates[targetCurrency];
-                if (!targetRate) return;
+                const baseRate = rates['RUB'] || 90;
+                const targetRate = rates[targetCurrency] || 1;
+                const rubToTarget = targetRate / baseRate;
                 currentGoods = baseGoods.map(g => {
-                    const newPrice = g.price * targetRate;
+                    const newPrice = g.price * rubToTarget;
                     return { ...g, price: Math.round(newPrice * 100) / 100 };
                 });
                 const currencyMap = {
+                    'RUB': '₽',
                     'USD': '$',
                     'EUR': '€',
                     'GBP': '£',
-                    'RUB': '₽',
                     'CNY': '¥',
                     'INR': '₹',
                     'JPY': '¥',
@@ -3159,7 +3555,7 @@
                 renderModalGoods();
                 updateCartUI();
                 updatePayButton();
-                updateRateDisplayForCountry(realCountryCode);
+                updateRateDisplayForCountry(currentCountryCode);
                 sidebarCurrency.textContent = `${targetCurrency} (${currentCurrency})`;
             }
 
@@ -3169,12 +3565,17 @@
                 currentCountryData = data;
                 countryFlag.textContent = data.flag || '🌍';
                 countryName.textContent = data.name || countryCode;
+                // Обновляем тег региона
+                if (countryCode === 'RF') {
+                    regionTag.textContent = 'РФ';
+                } else if (countryCode === 'RNDR') {
+                    regionTag.textContent = 'РНДР';
+                } else {
+                    regionTag.textContent = '🌍';
+                }
                 baseGoods = generateGoods(110, [0.5, 20]);
                 currencySwitcher.classList.add('visible');
-                const localCode = data.code || 'USD';
-                const optionExists = Array.from(currencySelect.options).some(opt => opt.value === localCode);
-                if (optionExists) currencySelect.value = localCode;
-                else currencySelect.value = 'USD';
+                currencySelect.value = data.code || 'RUB';
                 selectedCurrency = currencySelect.value;
                 convertPrices(selectedCurrency);
                 for (const key of Object.keys(cart)) delete cart[key];
@@ -3182,6 +3583,10 @@
                 updateInstructions(countryCode);
                 applyTranslations();
                 updateBranding(countryCode);
+                // Обновляем методы оплаты
+                renderPaymentMethods();
+                resetToIdle();
+                updatePayButton();
             }
 
             // ===== MODAL GOODS =====
@@ -3224,47 +3629,43 @@
 
             // ===== PAYMENT METHODS =====
             function renderPaymentMethods() {
-                const methods = getMethodsForCountry(realCountryCode);
+                const methods = getMethodsForCountry(currentCountryCode);
                 paymentMethodsEl.innerHTML = '';
                 methods.forEach(method => {
                     const span = document.createElement('span');
                     span.className = 'method-icon';
                     if (selectedMethod && selectedMethod.id === method.id) span.classList.add('active');
                     const feePercent = method.fee ? (method.fee * 100).toFixed(1) + '%' : '0%';
-                    span.innerHTML = method.svg ? method.svg + ' ' + method.label : method.label +
-                        `<span class="fee-badge">${feePercent}</span>`;
+                    span.innerHTML = `${method.svg || '💳'} ${method.label} <span class="fee-badge">${feePercent}</span>`;
                     span.dataset.methodId = method.id;
                     span.addEventListener('click', function() {
                         if (currentState === STATE.PENDING) return;
-                        selectedMethod = getMethodById(realCountryCode, method.id);
+                        selectedMethod = getMethodById(currentCountryCode, method.id);
                         updateMethodBadge();
                         updateFooter();
                         document.querySelectorAll('.method-icon').forEach(el => el.classList.remove('active'));
                         this.classList.add('active');
                         playBeep(600, 60);
-                        updateSidebarInfo(realCountryCode);
+                        updateSidebarInfo(currentCountryCode);
                         updateCartUI();
                     });
                     paymentMethodsEl.appendChild(span);
                 });
-                if (selectedMethod) {
-                    const exists = methods.some(m => m.id === selectedMethod.id);
-                    if (!exists) selectedMethod = getDefaultMethod(realCountryCode);
-                } else {
-                    selectedMethod = getDefaultMethod(realCountryCode);
+                if (!selectedMethod || !methods.some(m => m.id === selectedMethod.id)) {
+                    selectedMethod = getDefaultMethod(currentCountryCode);
                 }
                 updateMethodBadge();
                 updateFooter();
                 document.querySelectorAll('.method-icon').forEach(el => {
                     if (el.dataset.methodId === selectedMethod.id) el.classList.add('active');
                 });
-                updateSidebarInfo(realCountryCode);
+                updateSidebarInfo(currentCountryCode);
                 updateCartUI();
             }
 
             function updateMethodBadge() {
                 if (selectedMethod) {
-                    methodBadgeIcon.innerHTML = selectedMethod.svg || '💳';
+                    methodBadgeIcon.textContent = selectedMethod.svg || '💳';
                     methodBadgeText.textContent = selectedMethod.label;
                 }
             }
@@ -3327,12 +3728,6 @@
                 if (newQty < 0) return;
                 if (newQty === 0) delete cart[id];
                 else cart[id] = newQty;
-                const countEl = document.querySelector(`.good-item .good-count[data-id="${id}"]`);
-                if (countEl) {
-                    countEl.classList.remove('bump');
-                    void countEl.offsetWidth;
-                    countEl.classList.add('bump');
-                }
                 renderGoods();
                 renderModalGoods();
                 updateCartUI();
@@ -3353,7 +3748,7 @@
                 let fee = 0;
                 if (selectedMethod && selectedMethod.fee) fee = total * selectedMethod.fee;
                 let cashbackUsed = 0;
-                if (useCashbackCheck.checked && selectedMethod && selectedMethod.id === 'wavepay') { // больше не используется, но оставим для совместимости
+                if (useCashbackCheck.checked && wavepayBalance > 0) {
                     cashbackUsed = useCashbackForPayment(total);
                 }
                 const totalWithFee = total + fee - cashbackUsed;
@@ -3377,7 +3772,6 @@
                 } else {
                     cartFee.style.display = 'none';
                 }
-                // Кэшбэк теперь только через баланс, но без карты WayPay — оставляем только баланс
                 if (wavepayBalance > 0 && total > 0) {
                     cashbackRow.style.display = 'flex';
                     const maxCashback = Math.min(wavepayBalance, total);
@@ -3621,7 +4015,8 @@
 
             // ===== QR =====
             function generateQR(amount) {
-                const brand = getBrandName(realCountryCode);
+                const data = getCountryData(currentCountryCode);
+                const brand = data.name || 'WayPay';
                 qrAmount.textContent = `${amount.toFixed(2)} ${currentCurrency}`;
                 if (qrCodeInstance) {
                     qrCodeInstance.clear();
@@ -3704,7 +4099,7 @@
                 }
                 const totalWithFee = total + fee - cashbackUsed;
                 const items = Object.entries(cart);
-                const brand = getBrandName(realCountryCode);
+                const brand = getCountryData(currentCountryCode).name || 'WayPay';
                 let text = `=== ${brand} RECEIPT ===\n`;
                 text += `Дата: ${new Date().toLocaleString()}\n`;
                 text += `Метод: ${selectedMethod ? selectedMethod.label : '—'}\n`;
@@ -3757,7 +4152,6 @@
                         const statusText = isSuccess ? (currentLang === 'ru' ? 'Успешно' : 'Success') : (currentLang === 'ru' ?
                             'Ошибка' : 'Failed');
                         if (isSuccess) {
-                            // Скидка 5% на первую покупку (без привязки к карте WayPay)
                             let discount = 0;
                             const history = getHistory();
                             if (history.length === 0) {
@@ -3766,7 +4160,6 @@
                                 formattedAmount = currentCurrency === '₽' ? Math.round(amount).toLocaleString('ru-RU') :
                                     amount.toFixed(2);
                             }
-                            // Кешбэк 2% (начисляется на баланс)
                             addCashback(amount);
                             let cashbackUsed = 0;
                             if (useCashbackCheck.checked && wavepayBalance > 0) {
@@ -3784,7 +4177,7 @@
                                 status: statusText
                             });
                             setState(STATE.SUCCESS);
-                            const brand = getBrandName(realCountryCode);
+                            const brand = getCountryData(currentCountryCode).name || 'WayPay';
                             showToast('✅', t('payment_success'), `${methodName}: ${formattedAmount} ${currentCurrency}`);
                             playSuccessSound();
                             sendNotification(brand, `${t('payment_success')}: ${formattedAmount} ${currentCurrency}`);
@@ -3949,10 +4342,10 @@
                 updatePayButton();
                 playCurrencySwitch();
                 const currencyNames = {
+                    'RUB': 'рублях',
                     'USD': 'долларах',
                     'EUR': 'евро',
                     'GBP': 'фунтах',
-                    'RUB': 'рублях',
                     'CNY': 'юанях',
                     'INR': 'рупиях',
                     'JPY': 'иенах',
@@ -3990,25 +4383,79 @@
                 showToast('💱', t('currency_changed'), `${t('currency_prices')} ${currencyNames[newCurrency] || newCurrency}`);
             });
 
+            // ===== ОПРЕДЕЛЕНИЕ РЕГИОНА ПО IP (автоматически) =====
+            function detectCountryAndRegion() {
+                return fetch('https://ipapi.co/json/')
+                    .then(res => {
+                        if (!res.ok) throw new Error('ipapi failed');
+                        return res.json();
+                    })
+                    .then(data => {
+                        const country = data.country_code;
+                        const region = data.region;
+                        if (country === 'RU') {
+                            if (region && (region.includes('Moscow') || region.includes('Москва'))) {
+                                return 'RF';
+                            } else {
+                                return 'RNDR';
+                            }
+                        } else {
+                            // Если не Россия, пытаемся найти страну в списке
+                            const codes = Object.keys(COUNTRY_DATA);
+                            for (const code of codes) {
+                                if (code === country) return code;
+                            }
+                            // Если нет — возвращаем RNDR как fallback
+                            return 'RNDR';
+                        }
+                    })
+                    .catch(() => {
+                        // Fallback на ip-api.com
+                        return fetch('http://ip-api.com/json/')
+                            .then(res => {
+                                if (!res.ok) throw new Error('ip-api failed');
+                                return res.json();
+                            })
+                            .then(data => {
+                                const country = data.countryCode;
+                                const region = data.regionName;
+                                if (country === 'RU') {
+                                    if (region && (region.includes('Moscow') || region.includes('Москва'))) {
+                                        return 'RF';
+                                    } else {
+                                        return 'RNDR';
+                                    }
+                                } else {
+                                    const codes = Object.keys(COUNTRY_DATA);
+                                    for (const code of codes) {
+                                        if (code === country) return code;
+                                    }
+                                    return 'RNDR';
+                                }
+                            })
+                            .catch(() => 'RNDR');
+                    });
+            }
+
             // ===== REFRESH COUNTRY =====
             function refreshCountry() {
                 refreshBtn.disabled = true;
                 refreshBtn.textContent = '⏳ Загрузка...';
-                detectCountry().then(countryCode => {
-                    if (countryCode !== realCountryCode) {
-                        realCountryCode = countryCode;
-                        selectedMethod = getDefaultMethod(realCountryCode);
-                        loadGoodsForCountry(realCountryCode);
+                detectCountryAndRegion().then(countryCode => {
+                    if (countryCode !== currentCountryCode) {
+                        currentCountryCode = countryCode;
+                        selectedMethod = getDefaultMethod(currentCountryCode);
+                        loadGoodsForCountry(currentCountryCode);
                         renderPaymentMethods();
                         resetToIdle();
                         updatePayButton();
-                        const countryData = getCountryData(realCountryCode);
-                        showToast('🌍', t('region_updated'), `${t('location')} ${countryData.name || realCountryCode}`);
+                        const data = getCountryData(currentCountryCode);
+                        showToast('🌍', t('region_updated'), `${t('location')} ${data.name}`);
                         playBeep(1000, 80);
-                        updateBranding(realCountryCode);
+                        updateBranding(currentCountryCode);
                     } else {
-                        const countryData = getCountryData(realCountryCode);
-                        showToast('ℹ️', t('no_change'), `${t('remains')} ${countryData.name || realCountryCode}`);
+                        const data = getCountryData(currentCountryCode);
+                        showToast('ℹ️', t('no_change'), `${t('remains')} ${data.name}`);
                     }
                     refreshBtn.disabled = false;
                     refreshBtn.textContent = '🔄 Обновить';
@@ -4019,31 +4466,6 @@
                 });
             }
             refreshBtn.addEventListener('click', refreshCountry);
-
-            // ===== DETECT COUNTRY =====
-            function detectCountry() {
-                return fetch('https://ipapi.co/country/')
-                    .then(res => {
-                        if (!res.ok) throw new Error('ipapi failed');
-                        return res.text();
-                    })
-                    .then(code => {
-                        const raw = code.trim().toUpperCase();
-                        return mapCountry(raw);
-                    })
-                    .catch(() => {
-                        return fetch('http://ip-api.com/json/')
-                            .then(res => {
-                                if (!res.ok) throw new Error('ip-api failed');
-                                return res.json();
-                            })
-                            .then(data => {
-                                const raw = data.countryCode || 'RU';
-                                return mapCountry(raw);
-                            })
-                            .catch(() => 'RU');
-                    });
-            }
 
             // ===== SIDEBAR =====
             function openSidebar() {
@@ -4070,7 +4492,7 @@
                 currentLang = this.value;
                 localStorage.setItem('wavepay_lang', currentLang);
                 applyTranslations();
-                updateInstructions(realCountryCode);
+                updateInstructions(currentCountryCode);
                 renderHistory();
                 updateCartUI();
                 updatePayButton();
@@ -4115,32 +4537,35 @@
             setTheme(savedTheme);
             loadBalance();
 
-            fetchRates().then(() => {
-                return detectCountry();
-            }).then(countryCode => {
-                realCountryCode = countryCode;
-                selectedMethod = getDefaultMethod(realCountryCode);
-                loadGoodsForCountry(realCountryCode);
+            // Определяем регион
+            detectCountryAndRegion().then(countryCode => {
+                currentCountryCode = countryCode;
+                selectedMethod = getDefaultMethod(currentCountryCode);
+                loadGoodsForCountry(currentCountryCode);
                 renderPaymentMethods();
                 resetToIdle();
                 updatePayButton();
                 renderHistory();
                 applyTranslations();
-                updateBranding(realCountryCode);
-                console.log(`🌍 WayPay — страна: ${realCountryCode}`);
+                updateBranding(currentCountryCode);
+                console.log(`🌍 WayPay — регион: ${currentCountryCode}`);
             }).catch(() => {
-                detectCountry().then(countryCode => {
-                    realCountryCode = countryCode;
-                    selectedMethod = getDefaultMethod(realCountryCode);
-                    loadGoodsForCountry(realCountryCode);
-                    renderPaymentMethods();
-                    resetToIdle();
-                    updatePayButton();
-                    renderHistory();
-                    applyTranslations();
-                    updateBranding(realCountryCode);
-                    console.log(`🌍 WayPay — страна (fallback): ${realCountryCode}`);
-                });
+                // Fallback
+                currentCountryCode = 'RNDR';
+                selectedMethod = getDefaultMethod(currentCountryCode);
+                loadGoodsForCountry(currentCountryCode);
+                renderPaymentMethods();
+                resetToIdle();
+                updatePayButton();
+                renderHistory();
+                applyTranslations();
+                updateBranding(currentCountryCode);
+                console.log(`🌍 WayPay — регион (fallback): ${currentCountryCode}`);
+            });
+
+            fetchRates().then(() => {
+                convertPrices(selectedCurrency);
+                updateRateDisplayForCountry(currentCountryCode);
             });
 
             setTimeout(() => {
@@ -4158,6 +4583,10 @@
             if ('Notification' in window && Notification.permission === 'default') {
                 Notification.requestPermission();
             }
+
+            // Установка версии
+            footerVersion.textContent = `v${VERSION}`;
+            versionDisplay.textContent = VERSION;
 
         })();
     </script>
