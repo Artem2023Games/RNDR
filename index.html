@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>РНДР — Российская Народная Демократическая Республика</title>
     <style>
         * {
@@ -474,6 +474,27 @@
             text-align: center;
             border: 1px solid #b8c5d3;
         }
+        .waypay-btn {
+            display: inline-block;
+            margin-top: 10px;
+            background: #00e676;
+            color: #0a1a2b;
+            padding: 12px 28px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 15px;
+            transition: 0.25s ease;
+            border: 2px solid #00e676;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(0, 230, 118, 0.2);
+        }
+        .waypay-btn:hover {
+            background: #00c853;
+            border-color: #00c853;
+            transform: scale(1.02);
+            box-shadow: 0 8px 30px rgba(0, 230, 118, 0.3);
+        }
         @media (max-width: 600px) {
             .card {
                 padding: 18px 12px;
@@ -543,6 +564,10 @@
             .footer {
                 font-size: 11px;
             }
+            .waypay-btn {
+                font-size: 13px;
+                padding: 10px 20px;
+            }
         }
         @media (max-width: 400px) {
             .card {
@@ -589,6 +614,7 @@
             <a onclick="openModal('ecology')">🌱 Экология</a>
             <a onclick="openModal('laws')">⚖️ Законы</a>
             <a onclick="openModal('future')">🚀 Будущее</a>
+            <a href="waypay.html" target="_blank" style="background:#00e676; color:#0a1a2b; border-radius:40px; text-align:center; padding:6px 12px; margin-top:6px; border:2px solid #00e676;">💳 WayPay — оплата услуг</a>
         </div>
 
         <svg class="flag-svg" viewBox="0 0 160 90" xmlns="http://www.w3.org/2000/svg">
@@ -621,6 +647,8 @@
         </div>
 
         <a class="btn" href="https://t.me/rndr_official_ru" target="_blank">📢 Перейти в Telegram-канал</a>
+        <br>
+        <a href="waypay.html" target="_blank" class="waypay-btn">💳 WayPay — оплата услуг</a>
 
         <div class="footer">
             <strong>Девиз:</strong> «Порядок. Единство. Будущее.»<br>
@@ -744,7 +772,7 @@
                 <p style="margin-top:12px; color:#6a7f92;">🐕 Лечение и питание животных — бесплатно</p>
                 <button class="action-btn" onclick="showNotice('Регистрация животного')">📝 Зарегистрировать животное</button>
             `,
-            ecology: `
+            ecology_serv: `
                 <button class="back-btn" onclick="openModal('services')">← Назад к услугам</button>
                 <h2>🌿 Экология</h2>
                 <p><strong>Экологическая служба РНДР</strong></p>
@@ -1016,7 +1044,7 @@
                         🐾 Животные
                         <span>Регистрация, пособие, лечение</span>
                     </div>
-                    <div class="service-item" onclick="openModal('service_ecology')">
+                    <div class="service-item" onclick="openModal('service_ecology_serv')">
                         🌿 Экология
                         <span>Заповедники, штрафы, жалобы</span>
                     </div>
@@ -1046,13 +1074,11 @@
             service_education: serviceDetails.education,
             service_transport: serviceDetails.transport,
             service_animals: serviceDetails.animals,
-            service_ecology: serviceDetails.ecology,
+            service_ecology_serv: serviceDetails.ecology_serv,
             service_culture: serviceDetails.culture,
             service_sport_serv: serviceDetails.sport_serv,
             service_defence: serviceDetails.defence,
             service_feedback: serviceDetails.feedback,
-
-            // НОВЫЕ РАЗДЕЛЫ
             history: `
                 <h2>📜 История РНДР</h2>
                 <p><strong>2026 год</strong> — рождение идеи. 23 августа — замысел, 24 августа — утверждение Конституции и символов.</p>
@@ -1123,4 +1149,5 @@
     </script>
 
 </body>
+</html>
 </html>
